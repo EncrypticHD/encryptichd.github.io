@@ -8,6 +8,7 @@
 body {
     margin: 0;
     height: 100vh;
+
     background-color: #2b0a3d;
 
     background-image:
@@ -20,14 +21,12 @@ body {
     color: white;
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
-.center {
+.container {
     text-align: center;
-    margin-top: 15vh;
 }
 
 h1 {
@@ -39,26 +38,23 @@ p {
     opacity: 0.8;
 }
 
-.bottom {
-    width: 100%;
-    text-align: center;
-    padding-bottom: 40px;
-}
-
 #workButton {
+    margin-top: 30px;
+    position: relative;
     padding: 14px 28px;
     font-size: 18px;
+
     color: white;
     background: transparent;
+
     border: 2px solid #b84dff;
     border-radius: 8px;
+
     cursor: pointer;
+    overflow: hidden;
 
     box-shadow: 0 0 15px #b84dff;
-
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
 }
 
 #workButton:hover {
@@ -66,73 +62,52 @@ p {
     transform: scale(1.05);
 }
 
-.show {
-    animation: fadeInUp 0.8s forwards;
-}
+#workVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
 
-@keyframes fadeInUp {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+    width: 100%;
+    height: 100%;
 
-.arrow {
-    margin-left: 8px;
-}
+    object-fit: cover;
 
-#videoContainer {
-    position: fixed;
-    inset: 0;
+    z-index: 0;
     display: none;
-    justify-content: center;
-    align-items: center;
-    background: rgba(0,0,0,0.7);
 }
 
-#skitVideo {
-    width: 60%;
-    max-width: 800px;
-    border-radius: 10px;
+.button-text {
+    position: relative;
+    z-index: 1;
 }
 </style>
 </head>
 
 <body>
 
-<div class="center">
+<div class="container">
     <h1>Your Name</h1>
     <p>Developer • Creator • Builder</p>
-</div>
 
-<div class="bottom">
     <button id="workButton">
-        Work <span class="arrow">→</span>
+        <video id="workVideo" src="skit.mp4" muted></video>
+        <span class="button-text">Work →</span>
     </button>
 </div>
 
-<div id="videoContainer">
-    <video id="skitVideo" src="skit.mp4"></video>
-</div>
-
 <script>
-window.addEventListener("load", () => {
-    document.getElementById("workButton").classList.add("show");
-});
-
 const button = document.getElementById("workButton");
-const videoContainer = document.getElementById("videoContainer");
-const video = document.getElementById("skitVideo");
+const video = document.getElementById("workVideo");
 
 button.addEventListener("mouseenter", () => {
-    videoContainer.style.display = "flex";
+    video.style.display = "block";
     video.play();
 });
 
 button.addEventListener("mouseleave", () => {
     video.pause();
     video.currentTime = 0;
-    videoContainer.style.display = "none";
+    video.style.display = "none";
 });
 </script>
 
