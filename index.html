@@ -140,8 +140,72 @@ p {
     margin-left: 8px;
 }
 
-@media (max-width: 768px) {
+.funfact-wrapper {
+    position: fixed;
+    left: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 220px;
+    height: 140px;
+    z-index: 3;
+    animation: float 6s ease-in-out infinite;
+}
 
+.funfact-box {
+    position: absolute;
+    inset: 0;
+    background: rgba(30, 0, 45, 0.65);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
+    padding: 14px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.funfact-box h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #e7b6ff;
+}
+
+.funfact-box .divider {
+    height: 1px;
+    width: 70%;
+    margin: 6px auto 10px;
+    background: rgba(184,77,255,0.6);
+}
+
+.funfact-box p {
+    font-size: 13px;
+    opacity: 0.9;
+    line-height: 1.4;
+    animation: none;
+}
+
+.electric-border {
+    position: absolute;
+    inset: 0;
+    filter: drop-shadow(0 0 12px #b84dff);
+}
+
+.electric-border rect {
+    fill: none;
+    stroke: #b84dff;
+    stroke-width: 2;
+    stroke-dasharray: 12 8;
+    animation: electricMove 1.6s linear infinite, electricFlicker 0.12s infinite alternate;
+}
+
+@keyframes electricMove {
+    to { stroke-dashoffset: -200; }
+}
+
+@keyframes electricFlicker {
+    from { stroke-width: 2; opacity: 0.7; }
+    to { stroke-width: 2.6; opacity: 1; }
+}
+
+@media (max-width: 768px) {
     #gameGrid {
         --cellSize: calc(100vw / 18);
         grid-template-columns: repeat(20, var(--cellSize));
@@ -170,7 +234,6 @@ p {
         pointer-events: none;
     }
 }
-
 </style>
 </head>
 
@@ -180,10 +243,20 @@ p {
 <div class="line-glow"></div>
 <div class="mouse-glow"></div>
 
+<div class="funfact-wrapper">
+    <svg class="electric-border" viewBox="0 0 220 140">
+        <rect x="5" y="5" width="210" height="130" rx="16" ry="16" />
+    </svg>
+    <div class="funfact-box">
+        <h3>Fun Fact</h3>
+        <div class="divider"></div>
+        <p id="funFactText"></p>
+    </div>
+</div>
+
 <div class="container">
     <h1 id="name"></h1>
     <p id="desc"></p>
-
     <button id="workButton">
         <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
         <span class="button-text">Work <span class="arrow">→</span></span>
@@ -193,7 +266,7 @@ p {
 <script>
 const root = document.documentElement;
 
-document.addEventListener("mousemove", (e) => {
+document.addEventListener("mousemove", e => {
     root.style.setProperty("--x", e.clientX + "px");
     root.style.setProperty("--y", e.clientY + "px");
 });
@@ -215,11 +288,7 @@ window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         typeWriter(document.getElementById("name"), "EncrypticHD", 180);
         setTimeout(() => {
-            typeWriter(
-                document.getElementById("desc"),
-                "Developer • Programmer • Builder",
-                120
-            );
+            typeWriter(document.getElementById("desc"), "Developer • Programmer • Builder", 120);
         }, 1600);
     }, 300);
 
@@ -232,25 +301,19 @@ window.addEventListener("DOMContentLoaded", () => {
 const rows = 12;
 const cols = 20;
 const bombCount = 40;
-
 const gameGrid = document.getElementById("gameGrid");
 let board = [];
 
 function createBoard() {
     gameGrid.innerHTML = "";
     board = [];
-
     for (let i = 0; i < rows * cols; i++) {
         board.push({ bomb: false });
-
         const tile = document.createElement("div");
         tile.classList.add("tile");
-
         tile.addEventListener("click", () => revealTile(i, tile));
-
         gameGrid.appendChild(tile);
     }
-
     let placed = 0;
     while (placed < bombCount) {
         let index = Math.floor(Math.random() * board.length);
@@ -289,6 +352,30 @@ button.addEventListener("mouseleave", () => {
         video.style.display = "none";
     }
 });
+
+const funFacts = [
+    "LocalScripts only run on the client.",
+    "RemoteEvents are safer than RemoteFunctions.",
+    "StreamingEnabled boosts large-map performance.",
+    "TweenService is cheaper than manual loops.",
+    "Too many unanchored parts hurt performance.",
+    "Heartbeat runs every frame."
+];
+
+const factText = document.getElementById("funFactText");
+let factIndex = 0;
+
+function cycleFunFact() {
+    factText.style.opacity = 0;
+    setTimeout(() => {
+        factText.textContent = funFacts[factIndex];
+        factText.style.opacity = 1;
+        factIndex = (factIndex + 1) % funFacts.length;
+    }, 300);
+}
+
+cycleFunFact();
+setInterval(cycleFunFact, 6000);
 </script>
 
 </body>
