@@ -6,6 +6,11 @@
 <title>Portfolio</title>
 
 <style>
+:root {
+    --x: -200px;
+    --y: -200px;
+}
+
 body {
     margin: 0;
     height: 100vh;
@@ -44,25 +49,20 @@ body {
     position: fixed;
     inset: 0;
     pointer-events: none;
-
     background-image:
         linear-gradient(rgba(184,77,255,0.9) 1px, transparent 1px),
         linear-gradient(90deg, rgba(184,77,255,0.9) 1px, transparent 1px);
-
     background-size: calc(100% / 20) calc(100% / 12);
-
     mask-image: radial-gradient(
         70px circle at var(--x) var(--y),
         black 85%,
         transparent 100%
     );
-
     -webkit-mask-image: radial-gradient(
         70px circle at var(--x) var(--y),
         black 85%,
         transparent 100%
     );
-
     z-index: 1;
 }
 
@@ -70,13 +70,11 @@ body {
     position: fixed;
     inset: 0;
     pointer-events: none;
-
     background: radial-gradient(
         80px circle at var(--x) var(--y),
         rgba(184, 77, 255, 0.18),
         transparent 70%
     );
-
     z-index: 1;
 }
 
@@ -142,8 +140,6 @@ p {
     margin-left: 8px;
 }
 
-/* Moblie side */
-
 @media (max-width: 768px) {
 
     #gameGrid {
@@ -160,10 +156,6 @@ p {
     .line-glow {
         background-size: var(--cellSize) var(--cellSize);
     }
-
-}
-
-}
 
     h1 { font-size: 32px; }
     p { font-size: 16px; }
