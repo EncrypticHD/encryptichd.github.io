@@ -8,7 +8,6 @@
 body {
     margin: 0;
     height: 100vh;
-    overflow: hidden;
     background-color: #2b0a3d;
 
     background-image:
@@ -17,17 +16,33 @@ body {
 
     background-size: 60px 60px;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-family: Arial, sans-serif;
+    color: white;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
-body::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
+.center {
+    text-align: center;
+    margin-top: 15vh;
+}
+
+h1 {
+    font-size: 40px;
+    margin: 0;
+}
+
+p {
+    opacity: 0.8;
+}
+
+.bottom {
+    width: 100%;
+    text-align: center;
+    padding-bottom: 40px;
 }
 
 #workButton {
@@ -40,9 +55,9 @@ body::before {
     cursor: pointer;
 
     box-shadow: 0 0 15px #b84dff;
+
     opacity: 0;
     transform: translateY(20px);
-
     transition: all 0.3s ease;
 }
 
@@ -66,39 +81,58 @@ body::before {
     margin-left: 8px;
 }
 
-#skitVideo {
+#videoContainer {
+    position: fixed;
+    inset: 0;
     display: none;
-    position: absolute;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0,0,0,0.7);
+}
+
+#skitVideo {
+    width: 60%;
+    max-width: 800px;
+    border-radius: 10px;
 }
 </style>
 </head>
 
 <body>
 
-<button id="workButton">
-    Work <span class="arrow">→</span>
-</button>
+<div class="center">
+    <h1>Your Name</h1>
+    <p>Developer • Creator • Builder</p>
+</div>
 
-<!-- Put your Roblox skit file in the same folder and rename it -->
-<video id="skitVideo" src="skit.mp4"></video>
+<div class="bottom">
+    <button id="workButton">
+        Work <span class="arrow">→</span>
+    </button>
+</div>
+
+<div id="videoContainer">
+    <video id="skitVideo" src="skit.mp4"></video>
+</div>
 
 <script>
-
 window.addEventListener("load", () => {
     document.getElementById("workButton").classList.add("show");
 });
 
 const button = document.getElementById("workButton");
+const videoContainer = document.getElementById("videoContainer");
 const video = document.getElementById("skitVideo");
 
 button.addEventListener("mouseenter", () => {
-    video.style.display = "block";
+    videoContainer.style.display = "flex";
     video.play();
 });
 
 button.addEventListener("mouseleave", () => {
     video.pause();
     video.currentTime = 0;
+    videoContainer.style.display = "none";
 });
 </script>
 
