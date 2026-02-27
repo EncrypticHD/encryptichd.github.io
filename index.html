@@ -143,17 +143,22 @@ p {
 }
 
 /* Moblie side */
-    
+
 @media (max-width: 768px) {
 
     #gameGrid {
-        grid-template-columns: repeat(20, 1fr);
-        grid-template-rows: repeat(12, calc(100vw / 20));
-        height: calc((100vw / 20) * 12);
+        --cellSize: calc(100vw / 18);
+        grid-template-columns: repeat(20, var(--cellSize));
+        grid-template-rows: repeat(12, var(--cellSize));
+        width: calc(var(--cellSize) * 20);
+        height: calc(var(--cellSize) * 12);
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
     }
 
     .line-glow {
-        background-size: calc(100vw / 20) calc(100vw / 20);
+        background-size: var(--cellSize) var(--cellSize);
     }
 
 }
