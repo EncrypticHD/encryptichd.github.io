@@ -1,49 +1,106 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>My Portfolio</title>
+<meta charset="UTF-8">
+<title>Portfolio</title>
 
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #2b0a3d;
 
-            background-color: #2b0a3d;
+    background-image:
+        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
 
-            background-image:
-                linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 60px 60px;
 
-            background-size: 50px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+}
 
-            font-family: Arial, sans-serif;
-            color: white;
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
 
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+#workButton {
+    padding: 14px 28px;
+    font-size: 18px;
+    color: white;
+    background: transparent;
+    border: 2px solid #b84dff;
+    border-radius: 8px;
+    cursor: pointer;
 
-        .content {
-            text-align: center;
-        }
+    box-shadow: 0 0 15px #b84dff;
+    opacity: 0;
+    transform: translateY(20px);
 
-        h1 {
-            font-size: 40px;
-            margin: 0;
-        }
+    transition: all 0.3s ease;
+}
 
-        p {
-            opacity: 0.8;
-        }
-    </style>
+#workButton:hover {
+    box-shadow: 0 0 25px #b84dff, 0 0 40px #b84dff;
+    transform: scale(1.05);
+}
+
+.show {
+    animation: fadeInUp 0.8s forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.arrow {
+    margin-left: 8px;
+}
+
+#skitVideo {
+    display: none;
+    position: absolute;
+}
+</style>
 </head>
 
 <body>
-    <div class="content">
-        <h1>Your Name</h1>
-        <p>Developer • Creator • Builder</p>
-    </div>
+
+<button id="workButton">
+    Work <span class="arrow">→</span>
+</button>
+
+<!-- Put your Roblox skit file in the same folder and rename it -->
+<video id="skitVideo" src="skit.mp4"></video>
+
+<script>
+
+window.addEventListener("load", () => {
+    document.getElementById("workButton").classList.add("show");
+});
+
+const button = document.getElementById("workButton");
+const video = document.getElementById("skitVideo");
+
+button.addEventListener("mouseenter", () => {
+    video.style.display = "block";
+    video.play();
+});
+
+button.addEventListener("mouseleave", () => {
+    video.pause();
+    video.currentTime = 0;
+});
+</script>
+
 </body>
 </html>
