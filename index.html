@@ -83,7 +83,13 @@ body {
     z-index: 2;
 }
 
-@keyframes float {
+@keyframes floatBox {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes floatText {
     0% { transform: translateY(0px); }
     50% { transform: translateY(-8px); }
     100% { transform: translateY(0px); }
@@ -91,7 +97,7 @@ body {
 
 h1, p {
     margin: 0;
-    animation: float 4s ease-in-out infinite;
+    animation: floatText 4s ease-in-out infinite;
 }
 
 h1 { font-size: 40px; }
@@ -142,67 +148,90 @@ p {
 
 .funfact-wrapper {
     position: fixed;
-    left: 40px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 220px;
-    height: 140px;
+    left: clamp(12px, 2.5vw, 40px);
+    top: clamp(14px, 9vh, 90px);
+    width: clamp(240px, 26vw, 380px);
+    height: calc(100vh - clamp(28px, 12vh, 140px));
+    max-height: 620px;
     z-index: 3;
-    animation: float 6s ease-in-out infinite;
+    animation: floatBox 7s ease-in-out infinite;
 }
 
 .funfact-box {
     position: absolute;
     inset: 0;
-    background: rgba(30, 0, 45, 0.65);
-    backdrop-filter: blur(8px);
-    border-radius: 16px;
-    padding: 14px;
+    background: rgba(30, 0, 45, 0.68);
+    backdrop-filter: blur(10px);
+    border-radius: 18px;
+    padding: 18px;
     box-sizing: border-box;
-    text-align: center;
+    text-align: left;
+    overflow: hidden;
 }
 
 .funfact-box h3 {
     margin: 0;
-    font-size: 16px;
-    color: #e7b6ff;
+    font-size: clamp(16px, 1.2vw, 20px);
+    color: #f0c9ff;
+    letter-spacing: 0.5px;
+    text-align: center;
 }
 
 .funfact-box .divider {
     height: 1px;
-    width: 70%;
-    margin: 6px auto 10px;
-    background: rgba(184,77,255,0.6);
+    width: 78%;
+    margin: 10px auto 12px;
+    background: rgba(184,77,255,0.65);
 }
 
-.funfact-box p {
-    font-size: 13px;
-    opacity: 0.9;
-    line-height: 1.4;
+.funfact-content {
+    height: calc(100% - 58px);
+    overflow: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(184,77,255,0.65) rgba(0,0,0,0);
+}
+
+.funfact-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.funfact-content::-webkit-scrollbar-thumb {
+    background: rgba(184,77,255,0.55);
+    border-radius: 10px;
+}
+
+.funfact-content p {
+    margin: 10px 0;
+    font-size: clamp(12.5px, 0.95vw, 14px);
+    line-height: 1.55;
+    opacity: 0.92;
     animation: none;
 }
 
 .electric-border {
     position: absolute;
-    inset: 0;
-    filter: drop-shadow(0 0 12px #b84dff);
+    inset: -6px;
+    pointer-events: none;
+    z-index: 4;
 }
 
 .electric-border rect {
     fill: none;
-    stroke: #b84dff;
-    stroke-width: 2;
-    stroke-dasharray: 12 8;
-    animation: electricMove 1.6s linear infinite, electricFlicker 0.12s infinite alternate;
+    stroke: rgba(184,77,255,1);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    filter:
+        drop-shadow(0 0 2px rgba(184,77,255,0.95))
+        drop-shadow(0 0 6px rgba(184,77,255,0.8));
+    stroke-dasharray: 160 99999;
+    animation: raceLoop 35s linear infinite;
+    will-change: stroke-dashoffset;
 }
 
-@keyframes electricMove {
-    to { stroke-dashoffset: -200; }
-}
-
-@keyframes electricFlicker {
-    from { stroke-width: 2; opacity: 0.7; }
-    to { stroke-width: 2.6; opacity: 1; }
+@keyframes raceLoop {
+    to { stroke-dashoffset: -99999; }
 }
 
 @media (max-width: 768px) {
@@ -233,6 +262,13 @@ p {
         display: block;
         pointer-events: none;
     }
+
+    .funfact-wrapper {
+        left: 10px;
+        top: 10px;
+        width: min(92vw, 360px);
+        height: min(68vh, 520px);
+    }
 }
 </style>
 </head>
@@ -243,20 +279,20 @@ p {
 <div class="line-glow"></div>
 <div class="mouse-glow"></div>
 
-<div class="funfact-wrapper">
-    <svg class="electric-border" viewBox="0 0 220 140">
-        <rect x="5" y="5" width="210" height="130" rx="16" ry="16" />
-    </svg>
+<div class="funfact-wrapper" id="funfactWrap">
+    <svg class="electric-border" id="electricSvg" preserveAspectRatio="none"></svg>
+
     <div class="funfact-box">
-        <h3>Fun Fact</h3>
+        <h3>Fun Facts</h3>
         <div class="divider"></div>
-        <p id="funFactText"></p>
+        <div class="funfact-content" id="funFactContent"></div>
     </div>
 </div>
 
 <div class="container">
     <h1 id="name"></h1>
     <p id="desc"></p>
+
     <button id="workButton">
         <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
         <span class="button-text">Work <span class="arrow">→</span></span>
@@ -266,7 +302,7 @@ p {
 <script>
 const root = document.documentElement;
 
-document.addEventListener("mousemove", e => {
+document.addEventListener("mousemove", (e) => {
     root.style.setProperty("--x", e.clientX + "px");
     root.style.setProperty("--y", e.clientY + "px");
 });
@@ -296,24 +332,33 @@ window.addEventListener("DOMContentLoaded", () => {
         const video = document.getElementById("workVideo");
         video.play().catch(() => {});
     }
+
+    syncElectricBorder();
+    window.addEventListener("resize", syncElectricBorder);
 });
 
 const rows = 12;
 const cols = 20;
 const bombCount = 40;
+
 const gameGrid = document.getElementById("gameGrid");
 let board = [];
 
 function createBoard() {
     gameGrid.innerHTML = "";
     board = [];
+
     for (let i = 0; i < rows * cols; i++) {
         board.push({ bomb: false });
+
         const tile = document.createElement("div");
         tile.classList.add("tile");
+
         tile.addEventListener("click", () => revealTile(i, tile));
+
         gameGrid.appendChild(tile);
     }
+
     let placed = 0;
     while (placed < bombCount) {
         let index = Math.floor(Math.random() * board.length);
@@ -353,29 +398,33 @@ button.addEventListener("mouseleave", () => {
     }
 });
 
-const funFacts = [
-    "LocalScripts only run on the client.",
-    "RemoteEvents are safer than RemoteFunctions.",
-    "StreamingEnabled boosts large-map performance.",
-    "TweenService is cheaper than manual loops.",
-    "Too many unanchored parts hurt performance.",
-    "Heartbeat runs every frame."
+const devFacts = [
+    "Fun fact: LocalScripts only run on the client. UI, camera effects, and input handling belong there — but important stuff like currency, inventory, damage, or rewards must be validated on the server.",
+    "Fun fact: RemoteEvents are the normal way to communicate client ↔ server. Assume the client can lie: clamp numbers, check distances, confirm ownership, verify cooldowns, and sanity-check everything server-side.",
+    "Fun fact: StreamingEnabled helps big maps by loading nearby content. Avoid assuming far-away parts exist on the client, and build systems that work even if parts stream in late.",
+    "Fun fact: TweenService is usually smoother and cheaper than updating CFrame every frame. Use it for doors, UI motion, levers, buttons, and simple animations.",
+    "Fun fact: RenderStepped and Heartbeat run every frame — powerful but costly. Prefer events and state changes over constant per-frame loops whenever possible.",
+    "Fun fact: CollectionService tags keep projects clean. Instead of searching the workspace, you can grab tagged objects instantly and keep logic organized.",
+    "Fun fact: Object pooling improves performance. Reuse instances for projectiles, debris, pickups, and effects instead of constantly creating/destroying them.",
+    "Fun fact: Leaderstats are mainly display. Store real values server-side and save through DataStores safely, then mirror values for the UI/leaderboard.",
+    "Fun fact: DataStores can throttle. Wrap saves in pcall, don’t spam requests, and save on key moments like checkpoints, end of rounds, or player leaving.",
+    "Fun fact: Too many unanchored parts can tank FPS. Anchor what you can, keep physics simple, and only simulate what truly needs to move."
 ];
 
-const factText = document.getElementById("funFactText");
-let factIndex = 0;
+const funFactContent = document.getElementById("funFactContent");
+funFactContent.innerHTML = devFacts.map(t => `<p>${t}</p>`).join("");
 
-function cycleFunFact() {
-    factText.style.opacity = 0;
-    setTimeout(() => {
-        factText.textContent = funFacts[factIndex];
-        factText.style.opacity = 1;
-        factIndex = (factIndex + 1) % funFacts.length;
-    }, 300);
+function syncElectricBorder() {
+    const wrap = document.getElementById("funfactWrap");
+    const svg = document.getElementById("electricSvg");
+    const r = wrap.getBoundingClientRect();
+    const w = Math.max(1, Math.floor(r.width));
+    const h = Math.max(1, Math.floor(r.height));
+    svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+    svg.setAttribute("width", w);
+    svg.setAttribute("height", h);
+    svg.innerHTML = `<rect x="8" y="8" width="${w - 16}" height="${h - 16}" rx="18" ry="18"></rect>`;
 }
-
-cycleFunFact();
-setInterval(cycleFunFact, 6000);
 </script>
 
 </body>
