@@ -435,6 +435,140 @@
       .cursor-layer{ display:none !important; }
       canvas#fx{ display:none; }
     }
+
+    /* Contact cards */
+    .card-link{
+      text-decoration:none;
+      color: inherit;
+      display:block;
+    }
+    .card-link:focus-visible{
+      outline: 2px solid rgba(34,211,238,.55);
+      outline-offset: 3px;
+    }
+
+    /*  Project Modal  */
+    .modal{
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+    .modal.open{ display:flex; }
+
+    .modal-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(12px);
+    }
+
+    .modal-card{
+      position:relative;
+      width: min(980px, 94vw);
+      max-height: min(82vh, 760px);
+      overflow:auto;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(0,0,0,.35));
+      box-shadow: 0 18px 90px rgba(0,0,0,.72);
+    }
+
+    .modal-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.28);
+      position: sticky;
+      top: 0;
+    }
+
+    .modal-title{
+      font-family: Orbitron, Inter, sans-serif;
+      letter-spacing: .4px;
+      font-size: 1.05rem;
+    }
+
+    .modal-close{
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      color: rgba(244,241,255,.9);
+      border-radius: 12px;
+      padding: 10px 12px;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .modal-close:hover{
+      border-color: rgba(168,85,247,.35);
+      box-shadow: 0 0 22px rgba(168,85,247,.16);
+    }
+
+    .modal-body{
+      padding: 16px;
+    }
+
+    .modal-desc{
+      color: rgba(244,241,255,.78);
+      line-height: 1.6;
+      margin: 0 0 14px;
+    }
+
+    .modal-grid{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 760px){
+      .modal-grid{ grid-template-columns: 1fr; }
+    }
+
+    .modal-img{
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      overflow:hidden;
+      aspect-ratio: 16 / 9;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .modal-img img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display:block;
+    }
+
+    .modal-tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tag{
+      font-family: JetBrains Mono, monospace;
+      font-size: .78rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.28);
+      color: rgba(244,241,255,.86);
+    }
+
+    .project-btn{ cursor:pointer; }
+    .project-btn:focus-visible{
+      outline: 2px solid rgba(34,211,238,.55);
+      outline-offset: 3px;
+    }
+
+    body.modal-open{ overflow: hidden; }
   </style>
 </head>
 
@@ -540,7 +674,7 @@
             <p>Environments, performance aware builds, + more.</p>
           </div>
           <div class="card">
-            <div class="pill">HTML / JS </div>
+            <div class="pill">HTML / JS</div>
             <h3>Web UI</h3>
             <p>Responsive layouts, animation, interactive effects.</p>
           </div>
@@ -566,20 +700,22 @@
     <section id="projects">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Projects</h2>
-        <p class="section-sub">Replace these with real builds / experiences / systems.</p>
+        <p class="section-sub">Click a project to see details + images.</p>
 
         <div class="grid">
-          <div class="card">
+          <div class="card project-btn" tabindex="0" data-project="neon" role="button" aria-label="Open project: Neon District">
             <div class="pill">Experience</div>
             <h3>Neon District</h3>
             <p>Cyberpunk map build + lighting + optimized atmosphere.</p>
           </div>
-          <div class="card">
+
+          <div class="card project-btn" tabindex="0" data-project="inventory" role="button" aria-label="Open project: Inventory & Data">
             <div class="pill">System</div>
             <h3>Inventory & Data</h3>
             <p>Stable saving pattern + clean, expandable inventory modules.</p>
           </div>
-          <div class="card">
+
+          <div class="card project-btn" tabindex="0" data-project="hud" role="button" aria-label="Open project: HUD / Menus">
             <div class="pill">UI</div>
             <h3>HUD / Menus</h3>
             <p>Transitions, notifications, navigation, consistent styling.</p>
@@ -594,21 +730,23 @@
         <p class="section-sub">Discord is the fastest way to contact me, email is checked once every week.</p>
 
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
-          <div class="card">
+          <a class="card card-link" href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Gmail">
             <div class="pill">Email</div>
             <h3>zikuqaemail@gmail.com</h3>
             <p>Optional way to reach me.</p>
-          </div>
-          <div class="card">
+          </a>
+
+          <a class="card card-link" href="https://www.roblox.com/users/1547010029/profile" target="_blank" rel="noopener noreferrer" aria-label="Open Roblox profile">
             <div class="pill">Roblox</div>
             <h3>EncrypticHD</h3>
             <p>Check my experiences / builds.</p>
-          </div>
-          <div class="card">
+          </a>
+
+          <a class="card card-link" href="https://discord.com/channels/@me" target="_blank" rel="noopener noreferrer" aria-label="Open Discord">
             <div class="pill">Discord</div>
             <h3>@zikuqaa</h3>
             <p>Ping me for collabs.</p>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -618,8 +756,25 @@
     </footer>
   </main>
 
+  <!-- Project Modal -->
+  <div class="modal" id="projectModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-top">
+        <div class="modal-title" id="modalTitle">Project</div>
+        <button class="modal-close" id="modalClose" type="button">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <p class="modal-desc" id="modalDesc"></p>
+        <div class="modal-grid" id="modalImages"></div>
+        <div class="modal-tags" id="modalTags"></div>
+      </div>
+    </div>
+  </div>
+
   <script>
-    
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
     const rand  = (a, b) => a + Math.random() * (b - a);
     const lerp  = (a, b, t) => a + (b - a) * t;
@@ -634,6 +789,7 @@
         window.matchMedia?.("(pointer: coarse)")?.matches
       );
     }
+
 
     // Terminal Typing Intro
 
@@ -680,6 +836,7 @@
       }
     }
     typeTerminal();
+
 
     // LOW FX Canvas
 
@@ -811,7 +968,6 @@
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
-
       ctx.globalCompositeOperation = "lighter";
 
       // Reduced glow
@@ -914,9 +1070,9 @@
       requestAnimationFrame(renderFrame);
     }
 
-  
+   
     // Cursor FX
-  
+
     (function neonCursorFX(){
       const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       if (reduce) return;
@@ -974,11 +1130,13 @@
           s.style.top  = py + "px";
 
           (function step(){
-            life -= 0.005;
+            
+            life -= 0.025;
+
             px += vx; py += vy;
 
-            vy += grav;
-            vx *= 0.985; vy *= 0.985;
+            vy += grav * 0.75;
+            vx *= 0.992; vy *= 0.992;
 
             s.style.left = px + "px";
             s.style.top  = py + "px";
@@ -1034,6 +1192,141 @@
         requestAnimationFrame(animate);
       }
       requestAnimationFrame(animate);
+    })();
+
+    
+    // Project Modal
+    
+    (function projectModal(){
+      const modal = document.getElementById("projectModal");
+      const backdrop = document.getElementById("modalBackdrop");
+      const btnClose = document.getElementById("modalClose");
+      const titleEl = document.getElementById("modalTitle");
+      const descEl  = document.getElementById("modalDesc");
+      const imagesEl= document.getElementById("modalImages");
+      const tagsEl  = document.getElementById("modalTags");
+
+      if (!modal || !backdrop || !btnClose || !titleEl || !descEl || !imagesEl || !tagsEl) return;
+
+      const PROJECTS = {
+        neon: {
+          title: "Neon District (Experience)",
+          desc: "A cyberpunk Roblox environment build focused on mood, lighting, composition, and performance. Modular set dressing, optimized props, and atmosphere polish.",
+          tags: ["Roblox Studio", "Building", "Lighting", "Optimization"],
+          images: [
+            "https://picsum.photos/seed/neon1/1200/675",
+            "https://picsum.photos/seed/neon2/1200/675",
+            "https://picsum.photos/seed/neon3/1200/675",
+            "https://picsum.photos/seed/neon4/1200/675"
+          ]
+        },
+        inventory: {
+          title: "Inventory & Data (System)",
+          desc: "A modular inventory + saving structure designed for scaling. Clean module boundaries, server authority, and easy future expansion (items, rarity, trading, etc.).",
+          tags: ["Luau", "DataStore", "Modules", "Client/Server"],
+          images: [
+            "https://picsum.photos/seed/data1/1200/675",
+            "https://picsum.photos/seed/data2/1200/675",
+            "https://picsum.photos/seed/data3/1200/675",
+            "https://picsum.photos/seed/data4/1200/675"
+          ]
+        },
+        hud: {
+          title: "HUD / Menus (UI)",
+          desc: "A UI kit with consistent styling, transitions, notifications, and menu navigation. Designed for premium feel with motion + readability.",
+          tags: ["UI/UX", "Animations", "Framework", "Consistency"],
+          images: [
+            "https://picsum.photos/seed/ui1/1200/675",
+            "https://picsum.photos/seed/ui2/1200/675",
+            "https://picsum.photos/seed/ui3/1200/675",
+            "https://picsum.photos/seed/ui4/1200/675"
+          ]
+        }
+      };
+
+      let lastFocusEl = null;
+
+      function openModal(projectKey){
+        const p = PROJECTS[projectKey];
+        if (!p) return;
+
+        lastFocusEl = document.activeElement;
+
+        titleEl.textContent = p.title;
+        descEl.textContent = p.desc;
+
+        imagesEl.innerHTML = "";
+        p.images.forEach(src => {
+          const wrap = document.createElement("div");
+          wrap.className = "modal-img";
+          const img = document.createElement("img");
+          img.loading = "lazy";
+          img.alt = p.title + " screenshot";
+          img.src = src;
+          wrap.appendChild(img);
+          imagesEl.appendChild(wrap);
+        });
+
+        tagsEl.innerHTML = "";
+        p.tags.forEach(t => {
+          const tag = document.createElement("span");
+          tag.className = "tag";
+          tag.textContent = t;
+          tagsEl.appendChild(tag);
+        });
+
+        modal.classList.add("open");
+        document.body.classList.add("modal-open");
+        modal.setAttribute("aria-hidden", "false");
+        btnClose.focus();
+      }
+
+      function closeModal(){
+        modal.classList.remove("open");
+        document.body.classList.remove("modal-open");
+        modal.setAttribute("aria-hidden", "true");
+
+        if (lastFocusEl && typeof lastFocusEl.focus === "function") {
+          lastFocusEl.focus();
+        }
+      }
+
+      // Open on click
+      document.addEventListener("click", (e) => {
+        const card = e.target.closest?.(".project-btn");
+        if (!card) return;
+        openModal(card.getAttribute("data-project"));
+      });
+
+      // Keyboard support
+      document.addEventListener("keydown", (e) => {
+        if ((e.key === "Enter" || e.key === " ") && document.activeElement?.classList?.contains("project-btn")){
+          e.preventDefault();
+          openModal(document.activeElement.getAttribute("data-project"));
+          return;
+        }
+        if (e.key === "Escape" && modal.classList.contains("open")){
+          closeModal();
+        }
+      });
+
+      // Close handlers
+      btnClose.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", closeModal);
+
+      // Light focus trap
+      modal.addEventListener("keydown", (e) => {
+        if (e.key !== "Tab") return;
+        const focusables = modal.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+        if (!focusables.length) return;
+        const first = focusables[0];
+        const last  = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first){
+          e.preventDefault(); last.focus();
+        } else if (!e.shiftKey && document.activeElement === last){
+          e.preventDefault(); first.focus();
+        }
+      });
     })();
   </script>
 </body>
