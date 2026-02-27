@@ -1,247 +1,372 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Portfolio</title>
 
 <style>
-:root {
-    --x: -200px;
-    --y: -200px;
+:root{
+  --x:-200px;
+  --y:-200px;
+
+  --bg0:#20062e;
+  --bg1:#2b0a3d;
+  --ink:#ffffff;
+  --accent:#b84dff;
+  --accent2:#ff4df0;
+  --grid: rgba(184,77,255,0.16);
+  --gridGlow: rgba(184,77,255,0.9);
 }
 
-body {
-    margin: 0;
-    height: 100vh;
-    background: #2b0a3d;
-    font-family: Arial, sans-serif;
-    color: white;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+*{ box-sizing: border-box; }
+
+body{
+  margin:0;
+  height:100vh;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--ink);
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  /* richer background */
+  background:
+    radial-gradient(1000px circle at 20% 20%, rgba(184,77,255,0.22), transparent 55%),
+    radial-gradient(900px circle at 80% 70%, rgba(255,77,240,0.12), transparent 60%),
+    linear-gradient(180deg, var(--bg0), var(--bg1));
 }
 
-#gameGrid {
-    position: fixed;
-    inset: 0;
-    display: grid;
-    grid-template-columns: repeat(20, 1fr);
-    grid-template-rows: repeat(12, 1fr);
-    z-index: 0;
+/* subtle grain overlay */
+body::before{
+  content:"";
+  position:fixed;
+  inset:-20%;
+  pointer-events:none;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+  opacity: 0.08;
+  transform: rotate(3deg);
+  z-index:0;
 }
 
-.tile {
-    border: 1px solid rgba(184,77,255,0.15);
-    background: transparent;
+/* GRID */
+#gameGrid{
+  position:fixed;
+  inset:0;
+  display:grid;
+  grid-template-columns: repeat(20, 1fr);
+  grid-template-rows: repeat(12, 1fr);
+  z-index:0;
+  opacity:0.9;
 }
 
-.tile.revealed {
-    background: rgba(184,77,255,0.25);
+.tile{
+  border:1px solid var(--grid);
+  background: rgba(255,255,255,0.00);
+  transition: background 220ms ease, transform 220ms ease, box-shadow 220ms ease;
 }
 
-.tile.bomb {
-    background: red;
+.tile.revealed{
+  background: rgba(184,77,255,0.22);
+  box-shadow: inset 0 0 0 1px rgba(184,77,255,0.12), 0 0 14px rgba(184,77,255,0.12);
+  transform: scale(0.98);
 }
 
-.line-glow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background-image:
-        linear-gradient(rgba(184,77,255,0.9) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(184,77,255,0.9) 1px, transparent 1px);
-    background-size: calc(100% / 20) calc(100% / 12);
-    mask-image: radial-gradient(
-        70px circle at var(--x) var(--y),
-        black 85%,
-        transparent 100%
-    );
-    -webkit-mask-image: radial-gradient(
-        70px circle at var(--x) var(--y),
-        black 85%,
-        transparent 100%
-    );
-    z-index: 1;
+.tile.bomb{
+  background: linear-gradient(135deg, rgba(255,0,70,0.9), rgba(255,120,0,0.6));
+  box-shadow: 0 0 18px rgba(255,0,70,0.35);
 }
 
-.mouse-glow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(
-        80px circle at var(--x) var(--y),
-        rgba(184, 77, 255, 0.18),
-        transparent 70%
-    );
-    z-index: 1;
+/* glow line mask */
+.line-glow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background-image:
+    linear-gradient(var(--gridGlow) 1px, transparent 1px),
+    linear-gradient(90deg, var(--gridGlow) 1px, transparent 1px);
+  background-size: calc(100% / 20) calc(100% / 12);
+
+  mask-image: radial-gradient(
+    90px circle at var(--x) var(--y),
+    black 80%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    90px circle at var(--x) var(--y),
+    black 80%,
+    transparent 100%
+  );
+  opacity: 0.7;
+  z-index:1;
 }
 
-.container {
-    text-align: center;
-    z-index: 2;
+.mouse-glow{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background: radial-gradient(
+    140px circle at var(--x) var(--y),
+    rgba(184,77,255,0.18),
+    transparent 65%
+  );
+  z-index:1;
 }
 
-@keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-8px); }
-    100% { transform: translateY(0px); }
+/* CENTER PANEL */
+.container{
+  z-index:2;
+  text-align:center;
+  width:min(680px, 92vw);
+  padding: 28px 26px;
+  border-radius: 18px;
+
+  background: rgba(20, 4, 30, 0.35);
+  border: 1px solid rgba(184,77,255,0.22);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.35),
+    0 0 0 1px rgba(255,255,255,0.04) inset,
+    0 0 60px rgba(184,77,255,0.10);
 }
 
-h1, p {
-    margin: 0;
-    animation: float 4s ease-in-out infinite;
+/* a soft halo behind container */
+.container::before{
+  content:"";
+  position:absolute;
+  inset:-18px;
+  border-radius: 24px;
+  background: radial-gradient(600px circle at 50% 20%, rgba(184,77,255,0.18), transparent 60%);
+  filter: blur(8px);
+  z-index:-1;
 }
 
-h1 { font-size: 40px; }
-
-p {
-    opacity: 0.8;
-    margin-top: 10px;
+@keyframes float{
+  0%{ transform: translateY(0px); }
+  50%{ transform: translateY(-8px); }
+  100%{ transform: translateY(0px); }
 }
 
-#workButton {
-    margin-top: 30px;
-    position: relative;
-    padding: 14px 28px;
-    font-size: 18px;
-    color: white;
-    background: transparent;
-    border: 2px solid #b84dff;
-    border-radius: 8px;
-    cursor: pointer;
-    overflow: hidden;
-    box-shadow: 0 0 20px #b84dff;
-    transition: 0.3s ease;
+h1, p{
+  margin:0;
+  animation: float 4s ease-in-out infinite;
 }
 
-#workButton:hover {
-    box-shadow: 0 0 35px #b84dff, 0 0 60px #b84dff;
-    transform: scale(1.05);
+h1{
+  font-size: clamp(30px, 4vw, 44px);
+  letter-spacing: 0.6px;
+  line-height: 1.05;
+  text-shadow: 0 0 22px rgba(184,77,255,0.22);
 }
 
-#workVideo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-    z-index: 0;
+p{
+  opacity:0.82;
+  margin-top: 12px;
+  font-size: clamp(15px, 1.8vw, 18px);
 }
 
-.button-text {
-    position: relative;
-    z-index: 1;
+/* BUTTON */
+#workButton{
+  margin-top: 26px;
+  position:relative;
+  padding: 14px 28px;
+  font-size: 18px;
+  color:white;
+  background: rgba(184,77,255,0.08);
+  border: 1px solid rgba(184,77,255,0.55);
+  border-radius: 12px;
+  cursor:pointer;
+  overflow:hidden;
+  box-shadow:
+    0 0 18px rgba(184,77,255,0.35),
+    0 10px 30px rgba(0,0,0,0.25);
+  transition: transform 200ms ease, box-shadow 200ms ease, background 200ms ease;
+  transform: translateZ(0);
+  isolation:isolate;
 }
 
-.arrow {
-    margin-left: 8px;
+/* glossy sweep */
+#workButton::before{
+  content:"";
+  position:absolute;
+  inset:-40% -60%;
+  background: linear-gradient(120deg, transparent 35%, rgba(255,255,255,0.20), transparent 60%);
+  transform: translateX(-40%);
+  transition: transform 520ms ease;
+  z-index: 1;
+  pointer-events:none;
 }
 
-@media (max-width: 768px) {
-
-    #gameGrid {
-        --cellSize: calc(100vw / 18);
-        grid-template-columns: repeat(20, var(--cellSize));
-        grid-template-rows: repeat(12, var(--cellSize));
-        width: calc(var(--cellSize) * 20);
-        height: calc(var(--cellSize) * 12);
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .line-glow {
-        background-size: var(--cellSize) var(--cellSize);
-    }
-
-    h1 { font-size: 32px; }
-    p { font-size: 16px; }
-
-    #workButton {
-        font-size: 20px;
-        padding: 16px 32px;
-    }
-
-    #workVideo {
-        display: block;
-        pointer-events: none;
-    }
+#workButton:hover{
+  background: rgba(184,77,255,0.12);
+  box-shadow:
+    0 0 28px rgba(184,77,255,0.48),
+    0 0 60px rgba(184,77,255,0.26),
+    0 14px 42px rgba(0,0,0,0.28);
+  transform: translateY(-2px) scale(1.03);
 }
 
-.page-fade {
-    position: fixed;
-    inset: 0;
-    background: #2b0a3d;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 300ms ease;
-    z-index: 9999;
+#workButton:hover::before{
+  transform: translateX(35%);
 }
 
-.page-fade.on {
-    opacity: 1;
+#workButton:active{
+  transform: translateY(0px) scale(0.995);
 }
+
+#workVideo{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+  z-index:0;
+  filter: saturate(1.15) contrast(1.05) brightness(0.95);
+  opacity:0.9;
+}
+
+/* dim overlay so text stays readable when video shows */
+#workButton::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.45));
+  z-index:0;
+  pointer-events:none;
+  opacity:0;
+  transition: opacity 200ms ease;
+}
+#workButton.video-on::after{ opacity:1; }
+
+.button-text{
+  position:relative;
+  z-index:2;
+  display:inline-flex;
+  gap: 10px;
+  align-items:center;
+  font-weight:600;
+  letter-spacing:0.3px;
+}
+
+.arrow{
+  display:inline-block;
+  transition: transform 200ms ease;
+}
+#workButton:hover .arrow{ transform: translateX(4px); }
+
+/* MOBILE */
+@media (max-width: 768px){
+  #gameGrid{
+    --cellSize: calc(100vw / 18);
+    grid-template-columns: repeat(20, var(--cellSize));
+    grid-template-rows: repeat(12, var(--cellSize));
+    width: calc(var(--cellSize) * 20);
+    height: calc(var(--cellSize) * 12);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .line-glow{ background-size: var(--cellSize) var(--cellSize); }
+
+  #workButton{
+    font-size: 19px;
+    padding: 16px 34px;
+  }
+
+  /* show video on mobile */
+  #workVideo{
+    display:block;
+    pointer-events:none;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  h1, p{ animation: none; }
+  #workButton, .tile{ transition: none; }
+}
+
+/* page fade */
+.page-fade{
+  position:fixed;
+  inset:0;
+  background: var(--bg1);
+  opacity:0;
+  pointer-events:none;
+  transition: opacity 300ms ease;
+  z-index:9999;
+}
+.page-fade.on{ opacity:1; }
 </style>
 </head>
 
 <body>
+  <div id="gameGrid"></div>
+  <div class="line-glow"></div>
+  <div class="mouse-glow"></div>
 
-<div id="gameGrid"></div>
-<div class="line-glow"></div>
-<div class="mouse-glow"></div>
-
-<div class="container">
+  <div class="container">
     <h1 id="name"></h1>
     <p id="desc"></p>
 
     <button id="workButton">
-        <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
-        <span class="button-text">Work <span class="arrow">→</span></span>
+      <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
+      <span class="button-text">Work <span class="arrow">→</span></span>
     </button>
-</div>
+  </div>
 
-<div class="page-fade" id="pageFade"></div>
+  <div class="page-fade" id="pageFade"></div>
 
 <script>
 const root = document.documentElement;
 
 document.addEventListener("mousemove", (e) => {
-    root.style.setProperty("--x", e.clientX + "px");
-    root.style.setProperty("--y", e.clientY + "px");
+  root.style.setProperty("--x", e.clientX + "px");
+  root.style.setProperty("--y", e.clientY + "px");
 });
 
+document.addEventListener("touchmove", (e) => {
+  const t = e.touches?.[0];
+  if (!t) return;
+  root.style.setProperty("--x", t.clientX + "px");
+  root.style.setProperty("--y", t.clientY + "px");
+}, { passive: true });
+
 function typeWriter(element, text, speed) {
-    element.textContent = "";
-    let i = 0;
-    function type() {
-        if (i < text.length) {
-            element.textContent += text.charAt(i);
-            i++;
-            setTimeout(type, speed);
-        }
+  element.textContent = "";
+  let i = 0;
+  const type = () => {
+    if (i < text.length) {
+      element.textContent += text.charAt(i++);
+      setTimeout(type, speed);
     }
-    type();
+  };
+  type();
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    typeWriter(document.getElementById("name"), "EncrypticHD", 140);
     setTimeout(() => {
-        typeWriter(document.getElementById("name"), "EncrypticHD", 180);
-        setTimeout(() => {
-            typeWriter(
-                document.getElementById("desc"),
-                "Developer • Programmer • Builder",
-                120
-            );
-        }, 1600);
-    }, 300);
+      typeWriter(
+        document.getElementById("desc"),
+        "Developer • Programmer • Builder",
+        85
+      );
+    }, 1200);
+  }, 250);
 
-    if (window.innerWidth <= 768) {
-        const video = document.getElementById("workVideo");
-        video.play().catch(() => {});
-    }
+ 
+  if (window.innerWidth <= 768) {
+    const v = document.getElementById("workVideo");
+    v.play().catch(() => {});
+  }
 });
 
 const rows = 12;
@@ -252,37 +377,46 @@ const gameGrid = document.getElementById("gameGrid");
 let board = [];
 
 function createBoard() {
-    gameGrid.innerHTML = "";
-    board = [];
+  gameGrid.innerHTML = "";
+  board = [];
 
-    for (let i = 0; i < rows * cols; i++) {
-        board.push({ bomb: false });
+  for (let i = 0; i < rows * cols; i++) {
+    board.push({ bomb: false, revealed: false });
 
-        const tile = document.createElement("div");
-        tile.classList.add("tile");
+    const tile = document.createElement("div");
+    tile.className = "tile";
 
-        tile.addEventListener("click", () => revealTile(i, tile));
+    tile.addEventListener("click", () => revealTile(i, tile));
+  
+    tile.addEventListener("touchstart", () => tile.style.transform = "scale(0.96)", { passive: true });
+    tile.addEventListener("touchend", () => tile.style.transform = "", { passive: true });
 
-        gameGrid.appendChild(tile);
+    gameGrid.appendChild(tile);
+  }
+
+  let placed = 0;
+  while (placed < bombCount) {
+    const index = Math.floor(Math.random() * board.length);
+    if (!board[index].bomb) {
+      board[index].bomb = true;
+      placed++;
     }
-
-    let placed = 0;
-    while (placed < bombCount) {
-        let index = Math.floor(Math.random() * board.length);
-        if (!board[index].bomb) {
-            board[index].bomb = true;
-            placed++;
-        }
-    }
+  }
 }
 
 function revealTile(index, tile) {
-    if (board[index].bomb) {
-        tile.classList.add("bomb");
-        setTimeout(() => createBoard(), 400);
-        return;
-    }
-    tile.classList.add("revealed");
+  if (board[index].revealed) return;
+  board[index].revealed = true;
+
+  if (board[index].bomb) {
+    tile.classList.add("bomb");
+   
+    tile.style.transform = "scale(1.03)";
+    setTimeout(() => { tile.style.transform = ""; }, 120);
+    setTimeout(() => createBoard(), 450);
+    return;
+  }
+  tile.classList.add("revealed");
 }
 
 createBoard();
@@ -292,27 +426,28 @@ const video = document.getElementById("workVideo");
 const pageFade = document.getElementById("pageFade");
 
 button.addEventListener("mouseenter", () => {
-    if (window.innerWidth > 768) {
-        video.style.display = "block";
-        video.play();
-    }
+  if (window.innerWidth > 768) {
+    button.classList.add("video-on");
+    video.style.display = "block";
+    video.play().catch(() => {});
+  }
 });
 
 button.addEventListener("mouseleave", () => {
-    if (window.innerWidth > 768) {
-        video.pause();
-        video.currentTime = 0;
-        video.style.display = "none";
-    }
+  if (window.innerWidth > 768) {
+    button.classList.remove("video-on");
+    video.pause();
+    video.currentTime = 0;
+    video.style.display = "none";
+  }
 });
 
 button.addEventListener("click", () => {
-    pageFade.classList.add("on");
-    setTimeout(() => {
-        window.location.href = "work.html";
-    }, 300);
+  pageFade.classList.add("on");
+  setTimeout(() => {
+    window.location.href = "work.html";
+  }, 300);
 });
 </script>
-
 </body>
 </html>
