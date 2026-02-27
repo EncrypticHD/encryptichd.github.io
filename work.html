@@ -21,10 +21,8 @@
       --cyan:#22d3ee;
       --mag:#ff3df2;
 
-      --glass: rgba(255,255,255,.06);
       --border: rgba(255,255,255,.12);
       --shadow: 0 18px 70px rgba(0,0,0,.65);
-
       --radius: 18px;
     }
 
@@ -45,6 +43,8 @@
       position:fixed; inset:0;
       width:100%; height:100%;
       z-index:-3;
+      /* Helps the browser optimize compositing */
+      transform: translateZ(0);
     }
     .vignette{
       position:fixed; inset:-2px;
@@ -61,7 +61,7 @@
       position:fixed; inset:0;
       z-index:-1;
       pointer-events:none;
-      opacity:.08;
+      opacity:.07;
       mix-blend-mode: overlay;
       background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.65'/%3E%3C/svg%3E");
       background-size:140px 140px;
@@ -75,7 +75,8 @@
       display:flex;
       justify-content:space-between;
       align-items:center;
-      padding:16px 24px;
+      gap: 12px;
+      padding:16px 18px;
       backdrop-filter: blur(14px);
       background: linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.20));
       border-bottom:1px solid rgba(255,255,255,.10);
@@ -85,6 +86,7 @@
       font-family: Orbitron, Inter, sans-serif;
       letter-spacing:.5px;
       user-select:none;
+      white-space: nowrap;
     }
     .logo{
       width:28px; height:28px; border-radius:10px;
@@ -96,10 +98,12 @@
       color:var(--violet2);
       text-shadow: 0 0 16px rgba(168,85,247,.55);
     }
+
     nav{
-      display:flex; gap:18px;
+      display:flex; gap:12px;
       align-items:center;
       flex-wrap:wrap;
+      justify-content:flex-end;
     }
     nav a{
       color: rgba(244,241,255,.84);
@@ -119,6 +123,42 @@
       box-shadow: 0 0 18px rgba(168,85,247,.22);
     }
 
+    /* Quality selector */
+    .quality{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.28);
+      backdrop-filter: blur(10px);
+      user-select:none;
+    }
+    .quality label{
+      font-family: JetBrains Mono, monospace;
+      font-size: .78rem;
+      color: rgba(244,241,255,.72);
+    }
+    .quality select{
+      appearance:none;
+      -webkit-appearance:none;
+      font-family: JetBrains Mono, monospace;
+      font-size: .78rem;
+      color: rgba(244,241,255,.9);
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 10px;
+      padding: 7px 10px;
+      outline: none;
+    }
+
+    @media (max-width: 980px){
+      header{ padding: 14px 14px; }
+      nav{ gap:10px; }
+      .quality{ display:none; } /* keep header clean on small screens */
+    }
+
     /* Layout */
     main{ padding-top:84px; }
     section{
@@ -134,10 +174,7 @@
     }
 
     /* Hero */
-    .hero{
-      position:relative;
-      padding-top: 30px;
-    }
+    .hero{ position:relative; padding-top: 30px; }
     .hero-grid{
       display:grid;
       grid-template-columns: 1.2fr .8fr;
@@ -146,8 +183,6 @@
     }
     @media (max-width: 900px){
       .hero-grid{ grid-template-columns:1fr; }
-      nav{ gap:10px; }
-      header{ padding:14px 16px; }
     }
 
     .panel{
@@ -170,9 +205,7 @@
     }
     .panel > *{ position:relative; }
 
-    .hero-left{
-      padding:26px;
-    }
+    .hero-left{ padding:26px; }
     .kicker{
       display:inline-flex;
       align-items:center;
@@ -252,7 +285,7 @@
       box-shadow: 0 0 26px rgba(34,211,238,.16);
     }
 
-    /* Terminal intro */
+    /* Terminal */
     .terminal{
       padding: 0;
       display:flex;
@@ -268,10 +301,7 @@
       background: rgba(0,0,0,.35);
     }
     .term-dots{ display:flex; gap:8px; }
-    .term-dot{
-      width:11px; height:11px; border-radius: 99px;
-      opacity:.85;
-    }
+    .term-dot{ width:11px; height:11px; border-radius: 99px; opacity:.85; }
     .term-dot.red{ background:#ff3b59; box-shadow:0 0 10px rgba(255,59,89,.35); }
     .term-dot.yellow{ background:#ffcc00; box-shadow:0 0 10px rgba(255,204,0,.25); }
     .term-dot.green{ background:#22c55e; box-shadow:0 0 10px rgba(34,197,94,.25); }
@@ -304,7 +334,6 @@
       animation: blink 1s step-end infinite;
     }
     @keyframes blink { 50%{ opacity:0; } }
-
     .scanline{
       position:absolute; inset:0;
       pointer-events:none;
@@ -355,16 +384,15 @@
       position:absolute; inset:-1px;
       background: radial-gradient(420px 160px at 30% 0%, rgba(168,85,247,.18), transparent 65%),
                   radial-gradient(420px 160px at 70% 0%, rgba(34,211,238,.12), transparent 65%);
-      opacity:.65;
+      opacity:.55;
       pointer-events:none;
     }
     .card > *{ position:relative; }
-
     .card:hover{
       transform: translateY(-6px);
       border-color: rgba(168,85,247,.30);
       background: rgba(168,85,247,.10);
-      box-shadow: 0 0 28px rgba(168,85,247,.16), 0 0 44px rgba(34,211,238,.08);
+      box-shadow: 0 0 28px rgba(168,85,247,.14), 0 0 44px rgba(34,211,238,.07);
     }
     .pill{
       display:inline-flex;
@@ -397,10 +425,9 @@
       border-top: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.35);
     }
-
     :target{ scroll-margin-top: 92px; }
 
-    /* --- Neon Cursor FX --- */
+    /* --- Neon Cursor FX Layer --- */
     .cursor-layer{
       position: fixed;
       inset: 0;
@@ -416,17 +443,16 @@
       transform: translate(-50%, -50%);
       background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.95), rgba(168,85,247,.8) 55%, rgba(255,61,242,.5));
       box-shadow:
-        0 0 10px rgba(34,211,238,.55),
-        0 0 18px rgba(168,85,247,.45),
-        0 0 28px rgba(255,61,242,.25);
+        0 0 10px rgba(34,211,238,.45),
+        0 0 18px rgba(168,85,247,.35),
+        0 0 24px rgba(255,61,242,.18);
       opacity: .95;
     }
     .trail{
       position: absolute;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(168,85,247,.55), rgba(34,211,238,.10) 60%, rgba(0,0,0,0) 75%);
-      filter: blur(.2px);
+      background: radial-gradient(circle, rgba(168,85,247,.45), rgba(34,211,238,.10) 60%, rgba(0,0,0,0) 75%);
       will-change: transform, opacity;
     }
     .spark{
@@ -435,21 +461,21 @@
       height: 6px;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(34,211,238,.65), rgba(168,85,247,.25));
+      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(34,211,238,.6), rgba(168,85,247,.18));
       box-shadow:
-        0 0 10px rgba(255,255,255,.35),
-        0 0 16px rgba(34,211,238,.35),
-        0 0 22px rgba(168,85,247,.25);
+        0 0 10px rgba(255,255,255,.25),
+        0 0 14px rgba(34,211,238,.22),
+        0 0 18px rgba(168,85,247,.18);
       opacity: 1;
     }
     @media (prefers-reduced-motion: reduce){
-      .cursor-layer{ display:none; }
+      .cursor-layer{ display:none !important; }
+      canvas#fx{ display:none; }
     }
   </style>
 </head>
 
 <body>
-  <!-- Cursor FX -->
   <div class="cursor-layer" id="cursorLayer" aria-hidden="true"></div>
 
   <canvas id="fx"></canvas>
@@ -461,16 +487,26 @@
       <div class="logo" aria-hidden="true"></div>
       <div>Encryptic<span>HD</span></div>
     </div>
+
     <nav>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
+
+      <div class="quality" title="Quality affects FPS + battery usage">
+        <label for="qualitySel">FX</label>
+        <select id="qualitySel">
+          <option value="auto" selected>Auto</option>
+          <option value="low">Low</option>
+          <option value="med">Med</option>
+          <option value="high">High</option>
+        </select>
+      </div>
     </nav>
   </header>
 
   <main>
-    <!-- ETC -->
     <section class="hero" id="top">
       <div class="container hero-grid">
         <div class="panel hero-left">
@@ -507,36 +543,34 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">About</h2>
         <p class="section-sub">
-          Roblox-lean developer & builder. I like creating experiences that feel smooth and “finished”:
-          clean UI, satisfying gameplay loops, strong performance, and systems that are easy to expand.
+          Roblox-lean developer & builder. I create experiences that feel smooth and finished:
+          clean UI, satisfying loops, strong performance, and systems that are easy to expand.
         </p>
 
         <div class="grid" style="margin-top:18px;">
           <div class="card">
             <div class="pill">Roblox</div>
             <h3>Studio Building</h3>
-            <p>Maps, environments, set dressing, lighting, vibe — from blockout to final polish.</p>
+            <p>Maps, environments, set dressing, lighting — from blockout to final polish.</p>
           </div>
           <div class="card">
             <div class="pill">Scripting</div>
             <h3>Luau Systems</h3>
-            <p>Gameplay systems, data, UI controllers, toolkits, and modular patterns that scale.</p>
+            <p>Gameplay systems, data, UI controllers, modular patterns that scale.</p>
           </div>
           <div class="card">
             <div class="pill">Polish</div>
             <h3>UI / UX</h3>
-            <p>Cyber-neon interfaces, motion, and clean interactions that feel premium.</p>
+            <p>Cyber-neon interfaces, motion, and interactions that feel premium.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- SKILLS -->
     <section id="skills">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Skills</h2>
@@ -551,7 +585,7 @@
           <div class="card">
             <div class="pill">Builder</div>
             <h3>Roblox Studio</h3>
-            <p>Environment building, lighting, composition, modular kits, performance-aware assets.</p>
+            <p>Environment building, lighting, modular kits, performance-aware assets.</p>
           </div>
           <div class="card">
             <div class="pill">Web</div>
@@ -577,7 +611,6 @@
       </div>
     </section>
 
-    <!-- PROJECTS -->
     <section id="projects">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Projects</h2>
@@ -605,13 +638,10 @@
       </div>
     </section>
 
-    <!-- CONTACT -->
     <section id="contact">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Contact</h2>
-        <p class="section-sub">
-          Replace these with your real contact info.
-        </p>
+        <p class="section-sub">Replace these with your real contact info.</p>
 
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
           <div class="card">
@@ -639,17 +669,20 @@
   </main>
 
   <script>
-
+    // ---------------------------
+    // Helpers
+    // ---------------------------
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    const rand = (a, b) => a + Math.random() * (b - a);
-    const lerp = (a, b, t) => a + (b - a) * t;
+    const rand  = (a, b) => a + Math.random() * (b - a);
+    const lerp  = (a, b, t) => a + (b - a) * t;
 
     // Smooth scroll
     document.documentElement.style.scrollBehavior = "smooth";
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Terminal Typing
-    
+    // ---------------------------
+    // Terminal Typing Intro (lightweight)
+    // ---------------------------
     const termEl = document.getElementById("termText");
     const lines = [
       { txt: "boot --profile encryptichd", cls: "cmd" },
@@ -668,15 +701,14 @@
         "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
       }[m]));
     }
-
     const styles = {
       cmd: (s) => `<span class="prompt">❯</span> ${escapeHtml(s)}`,
       out: (s) => `<span style="color:rgba(244,241,255,.86)">${escapeHtml(s)}</span>`
     };
-
     const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
     async function typeTerminal(){
+      if (!termEl) return;
       termEl.innerHTML = "";
       for (let i=0; i<lines.length; i++){
         const isCmd = lines[i].cls === "cmd";
@@ -690,24 +722,109 @@
         for (let c=0; c<full.length; c++){
           typed += full[c];
           wrapper.innerHTML = isCmd ? styles.cmd(typed) : styles.out(typed);
-          await sleep(isCmd ? rand(14, 28) : rand(6, 14));
+          await sleep(isCmd ? rand(12, 22) : rand(6, 12));
         }
-        await sleep(isCmd ? 220 : 140);
+        await sleep(isCmd ? 180 : 120);
       }
     }
     typeTerminal();
 
-   
-    // FX: Lightning / Particles / Fog
+    // ---------------------------
+    // FX Quality (Auto/Low/Med/High)
+    // ---------------------------
+    const qualitySel = document.getElementById("qualitySel");
 
+    function isTouchDevice(){
+      return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia?.("(pointer: coarse)")?.matches
+      );
+    }
+
+    function getAutoQuality(){
+      // Strong defaults for smooth scroll on most devices
+      const dm = navigator.deviceMemory || 4;           // GB (not supported everywhere)
+      const hc = navigator.hardwareConcurrency || 4;    // cores
+      const smallScreen = Math.min(window.innerWidth, window.innerHeight) < 720;
+      const mobileLike = isTouchDevice() || smallScreen;
+
+      // Motion preference
+      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      if (reduceMotion) return "low";
+
+      // Conservative on mobile / small screens
+      if (mobileLike) {
+        if (dm <= 4 || hc <= 4) return "low";
+        return "med";
+      }
+
+      // Desktop-ish
+      if (dm >= 8 && hc >= 8) return "high";
+      if (dm >= 4 && hc >= 4) return "med";
+      return "low";
+    }
+
+    function loadQualityPref(){
+      const saved = localStorage.getItem("fxQuality") || "auto";
+      if (qualitySel) qualitySel.value = saved;
+      return saved;
+    }
+
+    function currentQuality(){
+      const pref = loadQualityPref();
+      return pref === "auto" ? getAutoQuality() : pref;
+    }
+
+    if (qualitySel){
+      qualitySel.addEventListener("change", () => {
+        localStorage.setItem("fxQuality", qualitySel.value);
+        // quick reload of FX without refreshing page
+        stopFX();
+        startFX();
+      }, { passive: true });
+    } else {
+      // ensure value exists even if selector hidden on small screens
+      loadQualityPref();
+    }
+
+    // ---------------------------
+    // Scroll performance: pause heavy FX while scrolling
+    // ---------------------------
+    let scrolling = false;
+    let scrollTimer = 0;
+    window.addEventListener("scroll", () => {
+      scrolling = true;
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => scrolling = false, 140);
+    }, { passive: true });
+
+    // Pause FX when tab not visible (battery-friendly)
+    let pageHidden = false;
+    document.addEventListener("visibilitychange", () => {
+      pageHidden = document.hidden;
+    });
+
+    // ---------------------------
+    // FX Canvas: optimized lightning + particles + fog
+    // ---------------------------
     const canvas = document.getElementById("fx");
     const ctx = canvas.getContext("2d", { alpha: true });
 
-    const DPR = () => Math.max(1, Math.min(2.25, window.devicePixelRatio || 1));
+    let fxRAF = 0;
+    let running = false;
+
     let w=0, h=0, dpr=1;
 
-    function resize(){
-      dpr = DPR();
+    function dprForQuality(q){
+      // Cap DPR for performance (huge win)
+      if (q === "low") return 1.0;
+      if (q === "med") return Math.min(1.35, window.devicePixelRatio || 1);
+      return Math.min(1.6, window.devicePixelRatio || 1);
+    }
+
+    function resizeCanvas(q){
+      dpr = dprForQuality(q);
       w = Math.floor(window.innerWidth * dpr);
       h = Math.floor(window.innerHeight * dpr);
       canvas.width = w;
@@ -715,129 +832,73 @@
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
     }
-    window.addEventListener("resize", resize, { passive: true });
-    resize();
 
-    // Particle storm
-    const particles = [];
-    const MAX_P = 260;
-    function spawnParticle(){
-      const speed = rand(0.4, 2.2) * dpr;
-      const size = rand(0.6, 2.6) * dpr;
-      particles.push({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: -speed * rand(0.6, 1.2),
-        vy: speed * rand(0.10, 0.45),
-        r: size,
-        a: rand(0.08, 0.22),
-        hue: Math.random() < 0.78 ? rand(265, 295) : rand(180, 200)
-      });
-    }
-    for(let i=0;i<MAX_P;i++) spawnParticle();
-
-    // Fog blobs
-    const fogs = Array.from({length: 8}, () => ({
-      x: rand(0, w), y: rand(0, h),
-      rx: rand(220, 520) * dpr,
-      ry: rand(140, 380) * dpr,
-      vx: rand(-0.08, 0.08) * dpr,
-      vy: rand(-0.05, 0.05) * dpr,
-      a: rand(0.045, 0.085),
-      tint: Math.random() < 0.6 ? "rgba(168,85,247," : "rgba(34,211,238,"
-    }));
-
-    // Lightning system
+    // FX state (rebuilt per quality)
+    let particles = [];
+    let fogs = [];
     let flash = 0;
-    let nextStrike = performance.now() + rand(700, 2200);
+    let nextStrike = performance.now() + rand(900, 2400);
 
-    function genBolt(x0, y0, x1, y1, depth, displace, points){
-      if(depth === 0){
-        points.push({x:x1, y:y1});
-        return;
-      }
-      const mx = (x0 + x1) / 2 + (Math.random() - 0.5) * displace;
-      const my = (y0 + y1) / 2 + (Math.random() - 0.5) * displace;
-      genBolt(x0, y0, mx, my, depth-1, displace/1.9, points);
-      genBolt(mx, my, x1, y1, depth-1, displace/1.9, points);
-    }
+    let TARGET_FPS = 30;
 
-    function drawBolt(path, baseWidth, colorMain, colorGlow){
-      ctx.save();
-      ctx.globalCompositeOperation = "lighter";
-      ctx.lineCap = "round";
-      ctx.lineJoin = "round";
+    function buildFX(q){
+      // FPS caps per tier
+      TARGET_FPS = (q === "high") ? 60 : (q === "med") ? 45 : 30;
 
-      // Outer glow
-      ctx.strokeStyle = colorGlow;
-      ctx.lineWidth = baseWidth * 5.2;
-      ctx.shadowBlur = baseWidth * 10;
-      ctx.shadowColor = colorGlow;
-      ctx.beginPath();
-      ctx.moveTo(path[0].x, path[0].y);
-      for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
-      ctx.stroke();
+      // Recreate particles / fog with tier-based counts
+      const area = window.innerWidth * window.innerHeight;
 
-      // Inner glow
-      ctx.strokeStyle = colorGlow;
-      ctx.lineWidth = baseWidth * 2.6;
-      ctx.shadowBlur = baseWidth * 7;
-      ctx.beginPath();
-      ctx.moveTo(path[0].x, path[0].y);
-      for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
-      ctx.stroke();
+      const pMin = (q === "low") ? 50 : (q === "med") ? 90 : 140;
+      const pMax = (q === "low") ? 90 : (q === "med") ? 150 : 220;
+      const particleCount = Math.floor(clamp(area / 11000, pMin, pMax));
 
-      // Core bolt
-      ctx.globalCompositeOperation = "source-over";
-      ctx.strokeStyle = colorMain;
-      ctx.lineWidth = baseWidth;
-      ctx.shadowBlur = baseWidth * 3;
-      ctx.shadowColor = colorMain;
-      ctx.beginPath();
-      ctx.moveTo(path[0].x, path[0].y);
-      for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
-      ctx.stroke();
+      const fogCount = (q === "low") ? 3 : (q === "med") ? 4 : 6;
 
-      ctx.restore();
-    }
-
-    function strike(){
-      const startX = rand(w*0.12, w*0.88);
-      const startY = -20 * dpr;
-      const endX   = startX + rand(-220, 220) * dpr;
-      const endY   = rand(h*0.45, h*0.95);
-
-      const main = "rgba(240,235,255,0.95)";
-      const glow = "rgba(168,85,247,0.55)";
-
-      // Main path
-      const depth = 7;
-      const pts = [{x:startX, y:startY}];
-      genBolt(startX, startY, endX, endY, depth, 240 * dpr, pts);
-
-      drawBolt(pts, 1.6 * dpr, main, glow);
-
-      // Branches
-      const branchCount = Math.floor(rand(3, 7));
-      for(let b=0; b<branchCount; b++){
-        const idx = Math.floor(rand(10, pts.length - 10));
-        const p = pts[idx];
-        const angle = rand(-Math.PI*0.85, Math.PI*0.15);
-        const len = rand(120, 320) * dpr;
-        const bx = p.x + Math.cos(angle) * len;
-        const by = p.y + Math.sin(angle) * len;
-
-        const bpts = [{x:p.x, y:p.y}];
-        genBolt(p.x, p.y, bx, by, 6, 120 * dpr, bpts);
-
-        drawBolt(bpts, 1.1 * dpr, "rgba(240,235,255,0.85)", "rgba(34,211,238,0.30)");
+      particles = [];
+      for (let i=0; i<particleCount; i++){
+        const speed = rand(0.35, 1.65) * dpr;
+        const size  = rand(0.6, (q === "low" ? 2.0 : 2.6)) * dpr;
+        particles.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: -speed * rand(0.6, 1.2),
+          vy:  speed * rand(0.10, 0.45),
+          r: size,
+          a: rand(q === "low" ? 0.06 : 0.08, q === "low" ? 0.16 : 0.22),
+          hue: Math.random() < 0.8 ? rand(265, 295) : rand(180, 200)
+        });
       }
 
-      flash = Math.max(flash, rand(0.35, 0.78));
+      fogs = Array.from({length: fogCount}, () => ({
+        x: rand(0, w), y: rand(0, h),
+        rx: rand(q === "low" ? 220 : 260, q === "low" ? 420 : 520) * dpr,
+        ry: rand(q === "low" ? 120 : 140, q === "low" ? 280 : 380) * dpr,
+        vx: rand(-0.06, 0.06) * dpr,
+        vy: rand(-0.04, 0.04) * dpr,
+        a: rand(q === "low" ? 0.035 : 0.045, q === "low" ? 0.060 : 0.080),
+        tint: Math.random() < 0.65 ? "rgba(168,85,247," : "rgba(34,211,238,"
+      }));
+
+      flash = 0;
+      nextStrike = performance.now() + rand(900, 2400);
     }
 
-    function drawFog(){
+    function fadeBackground(){
+      // Lower alpha = less smearing / less work
+      ctx.fillStyle = "rgba(0,0,0,0.18)";
+      ctx.fillRect(0, 0, w, h);
+
+      // Subtle wash
+      const g = ctx.createLinearGradient(0, 0, 0, h);
+      g.addColorStop(0, "rgba(168,85,247,0.06)");
+      g.addColorStop(1, "rgba(34,211,238,0.015)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    }
+
+    function drawFog(q){
       ctx.save();
+      // 'screen' is expensive but fog count is low; keep it, but cheap alpha
       ctx.globalCompositeOperation = "screen";
       for(const f of fogs){
         f.x += f.vx; f.y += f.vy;
@@ -846,7 +907,8 @@
         if(f.y < -f.ry) f.y = h + f.ry;
         if(f.y > h + f.ry) f.y = -f.ry;
 
-        const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, Math.max(f.rx, f.ry));
+        const radius = Math.max(f.rx, f.ry);
+        const grad = ctx.createRadialGradient(f.x, f.y, 0, f.x, f.y, radius);
         grad.addColorStop(0, `${f.tint}${f.a})`);
         grad.addColorStop(1, "rgba(0,0,0,0)");
 
@@ -858,23 +920,28 @@
       ctx.restore();
     }
 
-    function drawParticles(){
+    function drawParticles(q){
       ctx.save();
+      // 'lighter' looks sick but can cost; OK with reduced counts + reduced blur
       ctx.globalCompositeOperation = "lighter";
+      const blur = (q === "low") ? (2.8 * dpr) : (q === "med") ? (4.2 * dpr) : (5.5 * dpr);
+
       for(const p of particles){
         p.x += p.vx;
         p.y += p.vy;
 
-        p.vx += rand(-0.012, 0.012) * dpr;
-        p.vy += rand(-0.006, 0.006) * dpr;
-        p.vx = clamp(p.vx, -3.8*dpr, -0.2*dpr);
-        p.vy = clamp(p.vy,  0.05*dpr,  2.6*dpr);
+        // tiny turbulence
+        p.vx += rand(-0.010, 0.010) * dpr;
+        p.vy += rand(-0.005, 0.005) * dpr;
+
+        p.vx = clamp(p.vx, -3.2*dpr, -0.2*dpr);
+        p.vy = clamp(p.vy,  0.04*dpr,  2.2*dpr);
 
         if(p.x < -20*dpr){ p.x = w + 20*dpr; p.y = Math.random() * h; }
         if(p.y > h + 20*dpr){ p.y = -20*dpr; p.x = Math.random() * w; }
 
         ctx.fillStyle = `hsla(${p.hue}, 95%, 70%, ${p.a})`;
-        ctx.shadowBlur = 12 * dpr;
+        ctx.shadowBlur = blur;
         ctx.shadowColor = `hsla(${p.hue}, 95%, 70%, ${p.a})`;
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
@@ -883,56 +950,194 @@
       ctx.restore();
     }
 
-    function fadeBackground(){
-      ctx.fillStyle = "rgba(0,0,0,0.14)";
-      ctx.fillRect(0, 0, w, h);
-
-      const g = ctx.createLinearGradient(0, 0, 0, h);
-      g.addColorStop(0, "rgba(168,85,247,0.07)");
-      g.addColorStop(1, "rgba(34,211,238,0.02)");
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, w, h);
+    function genBolt(x0, y0, x1, y1, depth, displace, points){
+      if(depth === 0){ points.push({x:x1, y:y1}); return; }
+      const mx = (x0 + x1) / 2 + (Math.random() - 0.5) * displace;
+      const my = (y0 + y1) / 2 + (Math.random() - 0.5) * displace;
+      genBolt(x0, y0, mx, my, depth-1, displace/1.9, points);
+      genBolt(mx, my, x1, y1, depth-1, displace/1.9, points);
     }
 
+    function drawBolt(path, baseWidth, colorMain, colorGlow, q){
+      ctx.save();
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Keep glow but reduce blur based on tier
+      const glowMul = (q === "low") ? 3.2 : (q === "med") ? 4.2 : 5.2;
+      const blurMul = (q === "low") ? 5.5 : (q === "med") ? 7.5 : 9.0;
+
+      ctx.globalCompositeOperation = "lighter";
+
+      // Outer glow
+      ctx.strokeStyle = colorGlow;
+      ctx.lineWidth = baseWidth * glowMul;
+      ctx.shadowBlur = baseWidth * blurMul;
+      ctx.shadowColor = colorGlow;
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
+      ctx.stroke();
+
+      // Core
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = colorMain;
+      ctx.lineWidth = baseWidth;
+      ctx.shadowBlur = baseWidth * ((q === "low") ? 2.0 : 3.0);
+      ctx.shadowColor = colorMain;
+      ctx.beginPath();
+      ctx.moveTo(path[0].x, path[0].y);
+      for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function strike(q){
+      const startX = rand(w*0.12, w*0.88);
+      const startY = -20 * dpr;
+      const endX   = startX + rand(-220, 220) * dpr;
+      const endY   = rand(h*0.45, h*0.95);
+
+      const main = "rgba(240,235,255,0.92)";
+      const glow = "rgba(168,85,247,0.55)";
+
+      const depth = (q === "low") ? 6 : 7;
+      const pts = [{x:startX, y:startY}];
+      genBolt(startX, startY, endX, endY, depth, (q === "low" ? 180 : 240) * dpr, pts);
+
+      drawBolt(pts, (q === "low") ? (1.3*dpr) : (1.6*dpr), main, glow, q);
+
+      // Branches cheaper on low
+      const branchCount = (q === "low") ? Math.floor(rand(1, 3)) : Math.floor(rand(3, 6));
+      for(let b=0; b<branchCount; b++){
+        const idx = Math.floor(rand(10, pts.length - 10));
+        const p = pts[idx];
+        const angle = rand(-Math.PI*0.85, Math.PI*0.15);
+        const len = rand((q === "low") ? 90 : 120, (q === "low") ? 210 : 320) * dpr;
+        const bx = p.x + Math.cos(angle) * len;
+        const by = p.y + Math.sin(angle) * len;
+
+        const bpts = [{x:p.x, y:p.y}];
+        genBolt(p.x, p.y, bx, by, (q === "low") ? 5 : 6, (q === "low" ? 80 : 120) * dpr, bpts);
+
+        drawBolt(bpts, (q === "low") ? (0.9*dpr) : (1.1*dpr),
+          "rgba(240,235,255,0.78)",
+          "rgba(34,211,238,0.30)",
+          q
+        );
+      }
+
+      flash = Math.max(flash, rand((q === "low") ? 0.25 : 0.35, (q === "low") ? 0.55 : 0.78));
+    }
+
+    // FPS cap loop (critical for smooth scrolling)
     let last = performance.now();
-    function tick(now){
-      const dt = Math.min(0.033, (now - last) / 1000);
+    let acc = 0;
+
+    function fxLoop(now){
+      if (!running) return;
+
+      // stop heavy work if hidden (battery friendly)
+      if (pageHidden){
+        fxRAF = requestAnimationFrame(fxLoop);
+        return;
+      }
+
+      const q = currentQuality();
+      const step = 1 / TARGET_FPS;
+
+      const delta = Math.min(0.05, (now - last) / 1000);
       last = now;
+      acc += delta;
+
+      // Render at capped FPS
+      while (acc >= step){
+        renderFrame(step, now, q);
+        acc -= step;
+      }
+
+      fxRAF = requestAnimationFrame(fxLoop);
+    }
+
+    function renderFrame(dt, now, q){
+      // During active scroll, keep it light (smooth scroll priority)
+      if (scrolling){
+        // a tiny fade so it doesn't "hard freeze"
+        ctx.fillStyle = "rgba(0,0,0,0.24)";
+        ctx.fillRect(0, 0, w, h);
+        return;
+      }
 
       fadeBackground();
 
-      if(now >= nextStrike){
-        strike();
-        if(Math.random() < 0.35){
-          setTimeout(() => { strike(); }, Math.floor(rand(40, 140)));
+      // Less frequent lightning on low-end
+      if (now >= nextStrike){
+        strike(q);
+        if (q !== "low" && Math.random() < 0.22){
+          setTimeout(() => strike(q), Math.floor(rand(50, 120)));
         }
-        nextStrike = now + rand(800, 2600);
+        nextStrike = now + rand(
+          (q === "low") ? 1500 : 1000,
+          (q === "low") ? 4200 : 3200
+        );
       }
 
-      if(flash > 0.001){
+      // Flash overlay (cheap fill)
+      if (flash > 0.001){
         ctx.save();
         ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = `rgba(168,85,247,${flash * 0.22})`;
+        ctx.fillStyle = `rgba(168,85,247,${flash * ((q === "low") ? 0.12 : 0.18)})`;
         ctx.fillRect(0,0,w,h);
         ctx.restore();
-        flash = lerp(flash, 0, 1 - Math.pow(0.001, dt));
+        flash = lerp(flash, 0, (q === "low") ? 0.12 : 0.18);
       }
 
-      drawFog();
-      drawParticles();
-
-      requestAnimationFrame(tick);
+      drawFog(q);
+      drawParticles(q);
     }
 
-    ctx.fillStyle = "rgba(0,0,0,1)";
-    ctx.fillRect(0,0,w,h);
-    requestAnimationFrame(tick);
+    function startFX(){
+      if (!canvas) return;
+      running = true;
 
-    // Neon Cursor Trail 
-    
+      const q = currentQuality();
+      resizeCanvas(q);
+      buildFX(q);
+
+      // Prime
+      ctx.fillStyle = "rgba(0,0,0,1)";
+      ctx.fillRect(0,0,w,h);
+
+      last = performance.now();
+      acc = 0;
+      cancelAnimationFrame(fxRAF);
+      fxRAF = requestAnimationFrame(fxLoop);
+    }
+
+    function stopFX(){
+      running = false;
+      cancelAnimationFrame(fxRAF);
+      fxRAF = 0;
+    }
+
+    window.addEventListener("resize", () => {
+      // rebuild on resize for stability (still cheap because capped)
+      stopFX();
+      startFX();
+    }, { passive: true });
+
+    // Start FX unless reduced-motion
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (!reduceMotion) startFX();
+
+    // ---------------------------
+    // Neon Cursor Trail + Click Sparks (snappy + disabled on touch)
+    // ---------------------------
     (function neonCursorFX(){
-      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-      if (reduceMotion) return;
+      const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+      if (reduce) return;
+      if (isTouchDevice()) return; // mobile-friendly: no cursor FX on touch
 
       const layer = document.getElementById("cursorLayer");
       if (!layer) return;
@@ -944,10 +1149,13 @@
       let mx = window.innerWidth / 2, my = window.innerHeight / 2;
       let lx = mx, ly = my;
 
-      const TRAIL_MAX = 26;
+      // Faster response (your request)
+      const FOLLOW = 0.70; // 0.55-0.9: higher = snappier
+
+      // Smaller trail for performance
+      const TRAIL_MAX = 18;
       const trail = [];
-      const colors = [
-        {a: 0.55, size: 26},
+      const bands = [
         {a: 0.45, size: 22},
         {a: 0.35, size: 18},
         {a: 0.25, size: 14},
@@ -961,37 +1169,34 @@
       }
       for (let i = 0; i < TRAIL_MAX; i++) trail.push(makeTrailNode());
 
-      window.addEventListener("mousemove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
-      window.addEventListener("touchmove", (e) => {
-        const t = e.touches && e.touches[0];
-        if (!t) return;
-        mx = t.clientX; my = t.clientY;
-      }, { passive: true });
+      // pointermove is generally better than mousemove
+      window.addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
       function spawnSparks(x, y){
-        const count = Math.floor(10 + Math.random() * 14);
+        // fewer sparks to keep it smooth
+        const count = Math.floor(8 + Math.random() * 10);
         for (let i = 0; i < count; i++){
           const s = document.createElement("div");
           s.className = "spark";
           layer.appendChild(s);
 
           const ang = (Math.random() * Math.PI * 2);
-          const spd = 2.2 + Math.random() * 5.2;
+          const spd = 2.0 + Math.random() * 4.0;
           let vx = Math.cos(ang) * spd;
           let vy = Math.sin(ang) * spd;
-          const grav = 0.08 + Math.random() * 0.10;
+          const grav = 0.10 + Math.random() * 0.10;
 
           let px = x, py = y;
           let life = 1;
 
-          const size = 3 + Math.random() * 5;
+          const size = 3 + Math.random() * 4;
           s.style.width = size + "px";
           s.style.height = size + "px";
           s.style.left = px + "px";
           s.style.top  = py + "px";
 
           (function step(){
-            life -= 0.045;
+            life -= 0.055;
             px += vx;
             py += vy;
 
@@ -1012,7 +1217,7 @@
 
       window.addEventListener("pointerdown", (e) => {
         spawnSparks(e.clientX, e.clientY);
-      });
+      }, { passive: true });
 
       document.addEventListener("click", (e) => {
         const target = e.target.closest?.("a, button, .btn, .card");
@@ -1022,17 +1227,15 @@
           r.left + r.width * (0.3 + Math.random()*0.4),
           r.top + r.height * (0.3 + Math.random()*0.4)
         );
-      });
+      }, { passive: true });
 
       function animate(){
-        lx += (mx - lx) * 0.24;
-        ly += (my - ly) * 0.24;
+        // Snappier follow
+        lx += (mx - lx) * FOLLOW;
+        ly += (my - ly) * FOLLOW;
 
         dot.style.left = lx + "px";
         dot.style.top  = ly + "px";
-
-        const dx = mx - lx, dy = my - ly;
-        const speed = Math.sqrt(dx*dx + dy*dy);
 
         const head = trail.pop();
         head.x = lx; head.y = ly;
@@ -1041,9 +1244,9 @@
         for (let i = 0; i < trail.length; i++){
           const t = trail[i];
           const falloff = i / trail.length;
-          const band = colors[Math.min(colors.length-1, Math.floor(falloff * colors.length))];
+          const band = bands[Math.min(bands.length-1, Math.floor(falloff * bands.length))];
 
-          const size = (band.size * (1 - falloff)) + (speed * 0.05);
+          const size = band.size * (1 - falloff);
           const alpha = band.a * (1 - falloff);
 
           t.el.style.left = t.x + "px";
