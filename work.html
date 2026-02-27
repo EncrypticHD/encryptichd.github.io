@@ -569,6 +569,122 @@
     }
 
     body.modal-open{ overflow: hidden; }
+
+    /* About + Skills cards */
+    .static-grid .card{
+      cursor: default;
+      transform: none !important;
+    }
+    .static-grid .card:hover{
+      transform: none !important;
+      border-color: rgba(255,255,255,.12);
+      background: rgba(0,0,0,.22);
+      box-shadow: none;
+    }
+    .static-grid .card:active{
+      transform: none !important;
+    }
+    .static-grid .card::before{
+      opacity: .35;
+    }
+
+    /* Section divider */
+    .section-divider{
+      height: 1px;
+      margin: 18px 0 10px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(168,85,247,.55),
+        rgba(34,211,238,.45),
+        transparent
+      );
+      filter: drop-shadow(0 0 10px rgba(168,85,247,.18));
+      opacity: .9;
+    }
+
+    /*  Timeline block */
+    .timeline{
+      margin-top: 16px;
+      display:grid;
+      gap: 12px;
+    }
+    .step{
+      display:grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+    }
+    .step-badge{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: JetBrains Mono, monospace;
+      font-weight: 800;
+      color: rgba(10,4,20,.95);
+      background: linear-gradient(90deg, rgba(34,211,238,.95), rgba(168,85,247,.95));
+      box-shadow: 0 0 18px rgba(34,211,238,.16), 0 0 22px rgba(168,85,247,.14);
+    }
+    .step h4{
+      margin: 0 0 4px;
+      font-size: 1rem;
+      letter-spacing: .2px;
+    }
+    .step p{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: .96rem;
+    }
+
+    /* Skill meters */
+    .meters{
+      margin-top: 16px;
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    @media (max-width: 760px){ .meters{ grid-template-columns: 1fr; } }
+
+    .meter{
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.20);
+    }
+    .meter-top{
+      display:flex;
+      align-items:baseline;
+      justify-content:space-between;
+      gap: 12px;
+    }
+    .meter label{
+      font-weight: 800;
+    }
+    .meter small{
+      color: rgba(244,241,255,.70);
+      font-family: JetBrains Mono, monospace;
+    }
+    .bar{
+      margin-top: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .fill{
+      height: 100%;
+      width: var(--p, 60%);
+      border-radius: 999px;
+      background: linear-gradient(90deg, rgba(168,85,247,.95), rgba(34,211,238,.85));
+      box-shadow: 0 0 18px rgba(168,85,247,.16);
+    }
   </style>
 </head>
 
@@ -637,7 +753,36 @@
           Clean UI, satisfying loops, strong performance, and systems that are easy to expand.
         </p>
 
-        <div class="grid" style="margin-top:18px;">
+        <!-- divider for variety -->
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <!-- workflow timeline -->
+        <div class="timeline" aria-label="Workflow">
+          <div class="step">
+            <div class="step-badge">1</div>
+            <div>
+              <h4>Plan & Prototype</h4>
+              <p>Quick iteration in Studio, tight scope, and a clean foundation for systems + UI.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-badge">2</div>
+            <div>
+              <h4>Build Modular Systems</h4>
+              <p>Reusable Luau modules, predictable flow, server authority, and expandable patterns.</p>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-badge">3</div>
+            <div>
+              <h4>Polish & Optimize</h4>
+              <p>UI motion, readability, performance passes, profiling, and final “premium” feel.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- static-grid -->
+        <div class="grid static-grid" style="margin-top:18px;">
           <div class="card">
             <div class="pill">Roblox</div>
             <h3>Studio Building</h3>
@@ -662,7 +807,45 @@
         <h2 class="section-title">Skills</h2>
         <p class="section-sub">What I build with.</p>
 
-        <div class="grid">
+        <!-- divider + meters -->
+        <div class="section-divider" aria-hidden="true"></div>
+
+        <div class="meters" aria-label="Skill strengths">
+          <div class="meter">
+            <div class="meter-top">
+              <label>Luau / Systems</label>
+              <small>advanced</small>
+            </div>
+            <div class="bar"><div class="fill" style="--p: 88%;"></div></div>
+          </div>
+
+          <div class="meter">
+            <div class="meter-top">
+              <label>UI / UX</label>
+              <small>strong</small>
+            </div>
+            <div class="bar"><div class="fill" style="--p: 82%;"></div></div>
+          </div>
+
+          <div class="meter">
+            <div class="meter-top">
+              <label>Roblox Building</label>
+              <small>strong</small>
+            </div>
+            <div class="bar"><div class="fill" style="--p: 78%;"></div></div>
+          </div>
+
+          <div class="meter">
+            <div class="meter-top">
+              <label>Web (HTML / JS)</label>
+              <small>good</small>
+            </div>
+            <div class="bar"><div class="fill" style="--p: 70%;"></div></div>
+          </div>
+        </div>
+
+        <!-- static-grid -->
+        <div class="grid static-grid">
           <div class="card">
             <div class="pill">Lua / Luau</div>
             <h3>Roblox Scripting</h3>
@@ -702,6 +885,9 @@
         <h2 class="section-title">Projects</h2>
         <p class="section-sub">Click a project to see details + images.</p>
 
+        <!-- divider for variety -->
+        <div class="section-divider" aria-hidden="true"></div>
+
         <div class="grid">
           <div class="card project-btn" tabindex="0" data-project="neon" role="button" aria-label="Open project: Neon District">
             <div class="pill">Experience</div>
@@ -728,6 +914,9 @@
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Contact</h2>
         <p class="section-sub">Discord is the fastest way to contact me, email is checked once every week.</p>
+
+        <!-- divider for variety -->
+        <div class="section-divider" aria-hidden="true"></div>
 
         <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
           <a class="card card-link" href="https://mail.google.com/" target="_blank" rel="noopener noreferrer" aria-label="Open Gmail">
@@ -790,9 +979,7 @@
       );
     }
 
-
     // Terminal Typing Intro
-
     const termEl = document.getElementById("termText");
     const lines = [
       { txt: "boot --profile encryptichd", cls: "cmd" },
@@ -837,9 +1024,7 @@
     }
     typeTerminal();
 
-
     // LOW FX Canvas
-
     const canvas = document.getElementById("fx");
     const ctx = canvas.getContext("2d", { alpha: true });
 
@@ -1070,9 +1255,7 @@
       requestAnimationFrame(renderFrame);
     }
 
-   
     // Cursor FX
-
     (function neonCursorFX(){
       const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       if (reduce) return;
@@ -1130,7 +1313,6 @@
           s.style.top  = py + "px";
 
           (function step(){
-            
             life -= 0.025;
 
             px += vx; py += vy;
@@ -1194,9 +1376,7 @@
       requestAnimationFrame(animate);
     })();
 
-    
     // Project Modal
-    
     (function projectModal(){
       const modal = document.getElementById("projectModal");
       const backdrop = document.getElementById("modalBackdrop");
