@@ -23,14 +23,13 @@ body {
     inset: 0;
     display: grid;
     grid-template-columns: repeat(20, 1fr);
-    grid-auto-rows: 1fr;
+    grid-template-rows: repeat(12, 1fr);
     z-index: 0;
 }
 
 .tile {
     border: 1px solid rgba(184,77,255,0.15);
     background: transparent;
-    aspect-ratio: 1 / 1;
 }
 
 .tile.revealed {
@@ -50,7 +49,7 @@ body {
         linear-gradient(rgba(184,77,255,0.9) 1px, transparent 1px),
         linear-gradient(90deg, rgba(184,77,255,0.9) 1px, transparent 1px);
 
-    background-size: calc(100vw / 20) calc(100vh / 12);
+    background-size: calc(100% / 20) calc(100% / 12);
 
     mask-image: radial-gradient(
         70px circle at var(--x) var(--y),
@@ -64,7 +63,6 @@ body {
         transparent 100%
     );
 
-    opacity: 1;
     z-index: 1;
 }
 
@@ -79,7 +77,6 @@ body {
         transparent 70%
     );
 
-    opacity: 1;
     z-index: 1;
 }
 
@@ -148,20 +145,12 @@ p {
 }
 
 @media (max-width: 768px) {
-
-    h1 {
-        font-size: 32px;
-    }
-
-    p {
-        font-size: 16px;
-    }
-
+    h1 { font-size: 32px; }
+    p { font-size: 16px; }
     #workButton {
         font-size: 20px;
         padding: 16px 32px;
     }
-
 }
 </style>
 </head>
@@ -206,7 +195,6 @@ function typeWriter(element, text, speed) {
 window.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
         typeWriter(document.getElementById("name"), "EncrypticHD", 180);
-
         setTimeout(() => {
             typeWriter(
                 document.getElementById("desc"),
@@ -255,7 +243,6 @@ function revealTile(index, tile) {
         setTimeout(() => createBoard(), 400);
         return;
     }
-
     tile.classList.add("revealed");
 }
 
