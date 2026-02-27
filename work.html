@@ -43,7 +43,6 @@
       position:fixed; inset:0;
       width:100%; height:100%;
       z-index:-3;
-      /* Helps the browser optimize compositing */
       transform: translateZ(0);
     }
     .vignette{
@@ -121,42 +120,6 @@
       color: var(--fg);
       transform: translateY(-1px);
       box-shadow: 0 0 18px rgba(168,85,247,.22);
-    }
-
-    /* Quality selector */
-    .quality{
-      display:flex;
-      align-items:center;
-      gap:8px;
-      padding: 8px 10px;
-      border-radius: 12px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.28);
-      backdrop-filter: blur(10px);
-      user-select:none;
-    }
-    .quality label{
-      font-family: JetBrains Mono, monospace;
-      font-size: .78rem;
-      color: rgba(244,241,255,.72);
-    }
-    .quality select{
-      appearance:none;
-      -webkit-appearance:none;
-      font-family: JetBrains Mono, monospace;
-      font-size: .78rem;
-      color: rgba(244,241,255,.9);
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.14);
-      border-radius: 10px;
-      padding: 7px 10px;
-      outline: none;
-    }
-
-    @media (max-width: 980px){
-      header{ padding: 14px 14px; }
-      nav{ gap:10px; }
-      .quality{ display:none; } /* keep header clean on small screens */
     }
 
     /* Layout */
@@ -290,7 +253,7 @@
       padding: 0;
       display:flex;
       flex-direction:column;
-      min-height: 330px;
+      min-height: 320px;
     }
     .term-top{
       display:flex;
@@ -330,7 +293,7 @@
       transform: translateY(3px);
       background: rgba(34,211,238,.9);
       margin-left: 2px;
-      box-shadow: 0 0 14px rgba(34,211,238,.45);
+      box-shadow: 0 0 12px rgba(34,211,238,.35);
       animation: blink 1s step-end infinite;
     }
     @keyframes blink { 50%{ opacity:0; } }
@@ -339,12 +302,12 @@
       pointer-events:none;
       background: linear-gradient(180deg,
         transparent 0%,
-        rgba(34,211,238,.06) 48%,
+        rgba(34,211,238,.05) 48%,
         transparent 52%,
         transparent 100%);
       background-size: 100% 10px;
       mix-blend-mode: overlay;
-      opacity:.35;
+      opacity:.30;
     }
 
     /* Sections */
@@ -353,7 +316,7 @@
       letter-spacing:.4px;
       margin-bottom: 10px;
       color: var(--fg);
-      text-shadow: 0 0 18px rgba(168,85,247,.22);
+      text-shadow: 0 0 18px rgba(168,85,247,.18);
     }
     .section-sub{
       color: var(--muted);
@@ -390,9 +353,9 @@
     .card > *{ position:relative; }
     .card:hover{
       transform: translateY(-6px);
-      border-color: rgba(168,85,247,.30);
+      border-color: rgba(168,85,247,.28);
       background: rgba(168,85,247,.10);
-      box-shadow: 0 0 28px rgba(168,85,247,.14), 0 0 44px rgba(34,211,238,.07);
+      box-shadow: 0 0 26px rgba(168,85,247,.12), 0 0 40px rgba(34,211,238,.06);
     }
     .pill{
       display:inline-flex;
@@ -417,7 +380,6 @@
       font-size:.96rem;
     }
 
-    /* Footer */
     footer{
       padding: 26px 18px;
       text-align:center;
@@ -427,7 +389,7 @@
     }
     :target{ scroll-margin-top: 92px; }
 
-    /* --- Neon Cursor FX Layer --- */
+    /* Cursor FX */
     .cursor-layer{
       position: fixed;
       inset: 0;
@@ -441,18 +403,18 @@
       height: 10px;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.95), rgba(168,85,247,.8) 55%, rgba(255,61,242,.5));
+      background: radial-gradient(circle at 30% 30%, rgba(34,211,238,.95), rgba(168,85,247,.8) 55%, rgba(255,61,242,.45));
       box-shadow:
-        0 0 10px rgba(34,211,238,.45),
-        0 0 18px rgba(168,85,247,.35),
-        0 0 24px rgba(255,61,242,.18);
+        0 0 10px rgba(34,211,238,.40),
+        0 0 16px rgba(168,85,247,.30),
+        0 0 22px rgba(255,61,242,.16);
       opacity: .95;
     }
     .trail{
       position: absolute;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(168,85,247,.45), rgba(34,211,238,.10) 60%, rgba(0,0,0,0) 75%);
+      background: radial-gradient(circle, rgba(168,85,247,.40), rgba(34,211,238,.10) 60%, rgba(0,0,0,0) 75%);
       will-change: transform, opacity;
     }
     .spark{
@@ -461,13 +423,14 @@
       height: 6px;
       border-radius: 999px;
       transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(255,255,255,.95), rgba(34,211,238,.6), rgba(168,85,247,.18));
+      background: radial-gradient(circle, rgba(255,255,255,.92), rgba(34,211,238,.55), rgba(168,85,247,.18));
       box-shadow:
-        0 0 10px rgba(255,255,255,.25),
-        0 0 14px rgba(34,211,238,.22),
-        0 0 18px rgba(168,85,247,.18);
+        0 0 10px rgba(255,255,255,.22),
+        0 0 14px rgba(34,211,238,.18),
+        0 0 18px rgba(168,85,247,.16);
       opacity: 1;
     }
+
     @media (prefers-reduced-motion: reduce){
       .cursor-layer{ display:none !important; }
       canvas#fx{ display:none; }
@@ -487,22 +450,11 @@
       <div class="logo" aria-hidden="true"></div>
       <div>Encryptic<span>HD</span></div>
     </div>
-
     <nav>
       <a href="#about">About</a>
       <a href="#skills">Skills</a>
       <a href="#projects">Projects</a>
       <a href="#contact">Contact</a>
-
-      <div class="quality" title="Quality affects FPS + battery usage">
-        <label for="qualitySel">FX</label>
-        <select id="qualitySel">
-          <option value="auto" selected>Auto</option>
-          <option value="low">Low</option>
-          <option value="med">Med</option>
-          <option value="high">High</option>
-        </select>
-      </div>
     </nav>
   </header>
 
@@ -521,8 +473,8 @@
             <a class="btn btn-ghost" href="#contact">💬 Contact</a>
           </div>
           <p class="section-sub" style="margin-top:14px;">
-            <span style="color:rgba(255,61,242,.9); font-weight:700;">Specialties:</span>
-            Roblox Studio building, scripting, UI systems, optimization, and polished presentation.
+            <span style="color:rgba(255,61,242,.9); font-weight:700;">Skills:</span>
+            HTML, Python, Lua (Luau) — plus building, UI systems, and optimization.
           </p>
         </div>
 
@@ -574,38 +526,38 @@
     <section id="skills">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Skills</h2>
-        <p class="section-sub">A quick snapshot of what I build with.</p>
+        <p class="section-sub">What I build with.</p>
 
         <div class="grid">
           <div class="card">
-            <div class="pill">Roblox</div>
-            <h3>Lua / Luau</h3>
-            <p>Client/server scripting, UI systems, gameplay loops, optimization.</p>
+            <div class="pill">Lua / Luau</div>
+            <h3>Roblox Scripting</h3>
+            <p>Client/server, UI controllers, gameplay, modular systems.</p>
           </div>
           <div class="card">
-            <div class="pill">Builder</div>
-            <h3>Roblox Studio</h3>
-            <p>Environment building, lighting, modular kits, performance-aware assets.</p>
+            <div class="pill">Roblox Studio</div>
+            <h3>Builder</h3>
+            <p>Environments, lighting, composition, performance-aware builds.</p>
           </div>
           <div class="card">
-            <div class="pill">Web</div>
-            <h3>HTML • CSS • JavaScript</h3>
-            <p>Modern UI, animations, responsive layouts, interactive effects.</p>
+            <div class="pill">HTML / CSS / JS</div>
+            <h3>Web UI</h3>
+            <p>Responsive layouts, animation, interactive effects.</p>
           </div>
           <div class="card">
             <div class="pill">Python</div>
             <h3>Automation</h3>
-            <p>Tooling, scripting, data processing, workflow improvements.</p>
+            <p>Tooling, scripts, workflow boosts.</p>
           </div>
           <div class="card">
             <div class="pill">Systems</div>
             <h3>Architecture</h3>
-            <p>Clean module structure, reusable components, scalable patterns.</p>
+            <p>Reusable modules, clean patterns, scalable design.</p>
           </div>
           <div class="card">
             <div class="pill">Performance</div>
             <h3>Optimize</h3>
-            <p>Profiling, reducing overhead, smooth UX across devices.</p>
+            <p>Profiling, smoothing, reducing overhead.</p>
           </div>
         </div>
       </div>
@@ -614,25 +566,23 @@
     <section id="projects">
       <div class="container panel" style="padding:26px;">
         <h2 class="section-title">Projects</h2>
-        <p class="section-sub">
-          Swap these placeholders with your real Roblox experiences / systems / builds (add links when ready).
-        </p>
+        <p class="section-sub">Replace these with real builds / experiences / systems.</p>
 
         <div class="grid">
           <div class="card">
-            <div class="pill">Roblox Experience</div>
+            <div class="pill">Experience</div>
             <h3>Neon District</h3>
-            <p>Cyberpunk map build + lighting pass + optimized set dressing and atmosphere.</p>
+            <p>Cyberpunk map build + lighting + optimized atmosphere.</p>
           </div>
           <div class="card">
             <div class="pill">System</div>
             <h3>Inventory & Data</h3>
-            <p>Modular inventory + data saving pattern built for expandability and stability.</p>
+            <p>Stable saving pattern + clean, expandable inventory modules.</p>
           </div>
           <div class="card">
             <div class="pill">UI</div>
             <h3>HUD / Menus</h3>
-            <p>Clean UI framework: transitions, notifications, and controller-friendly navigation.</p>
+            <p>Transitions, notifications, navigation, consistent styling.</p>
           </div>
         </div>
       </div>
@@ -676,24 +626,29 @@
     const rand  = (a, b) => a + Math.random() * (b - a);
     const lerp  = (a, b, t) => a + (b - a) * t;
 
-    // Smooth scroll
     document.documentElement.style.scrollBehavior = "smooth";
     document.getElementById("year").textContent = new Date().getFullYear();
 
+    function isTouchDevice(){
+      return (
+        "ontouchstart" in window ||
+        navigator.maxTouchPoints > 0 ||
+        window.matchMedia?.("(pointer: coarse)")?.matches
+      );
+    }
+
     // ---------------------------
-    // Terminal Typing Intro (lightweight)
+    // Terminal Typing Intro
     // ---------------------------
     const termEl = document.getElementById("termText");
     const lines = [
       { txt: "boot --profile encryptichd", cls: "cmd" },
-      { txt: "loading modules: roblox, ui, systems, build-tools...", cls: "out" },
+      { txt: "loading modules: roblox, ui, systems...", cls: "out" },
       { txt: "status: ✅ online", cls: "out" },
-      { txt: "whoami", cls: "cmd" },
-      { txt: "EncrypticHD — Programmer • Builder • Roblox Dev", cls: "out" },
       { txt: "skills --list", cls: "cmd" },
-      { txt: "Lua/Luau • Roblox Studio • HTML • Python • JS • Optimization", cls: "out" },
+      { txt: "HTML • Python • Lua/Luau • Roblox Studio • UI", cls: "out" },
       { txt: "mission", cls: "cmd" },
-      { txt: "Ship clean, fast, futuristic experiences ⚡ ykyk", cls: "out" },
+      { txt: "Ship clean, smooth Roblox experiences ⚡ ykyk", cls: "out" },
     ];
 
     function escapeHtml(str){
@@ -722,109 +677,26 @@
         for (let c=0; c<full.length; c++){
           typed += full[c];
           wrapper.innerHTML = isCmd ? styles.cmd(typed) : styles.out(typed);
-          await sleep(isCmd ? rand(12, 22) : rand(6, 12));
+          await sleep(isCmd ? rand(12, 20) : rand(6, 10));
         }
-        await sleep(isCmd ? 180 : 120);
+        await sleep(isCmd ? 160 : 110);
       }
     }
     typeTerminal();
 
     // ---------------------------
-    // FX Quality (Auto/Low/Med/High)
-    // ---------------------------
-    const qualitySel = document.getElementById("qualitySel");
-
-    function isTouchDevice(){
-      return (
-        "ontouchstart" in window ||
-        navigator.maxTouchPoints > 0 ||
-        window.matchMedia?.("(pointer: coarse)")?.matches
-      );
-    }
-
-    function getAutoQuality(){
-      // Strong defaults for smooth scroll on most devices
-      const dm = navigator.deviceMemory || 4;           // GB (not supported everywhere)
-      const hc = navigator.hardwareConcurrency || 4;    // cores
-      const smallScreen = Math.min(window.innerWidth, window.innerHeight) < 720;
-      const mobileLike = isTouchDevice() || smallScreen;
-
-      // Motion preference
-      const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-      if (reduceMotion) return "low";
-
-      // Conservative on mobile / small screens
-      if (mobileLike) {
-        if (dm <= 4 || hc <= 4) return "low";
-        return "med";
-      }
-
-      // Desktop-ish
-      if (dm >= 8 && hc >= 8) return "high";
-      if (dm >= 4 && hc >= 4) return "med";
-      return "low";
-    }
-
-    function loadQualityPref(){
-      const saved = localStorage.getItem("fxQuality") || "auto";
-      if (qualitySel) qualitySel.value = saved;
-      return saved;
-    }
-
-    function currentQuality(){
-      const pref = loadQualityPref();
-      return pref === "auto" ? getAutoQuality() : pref;
-    }
-
-    if (qualitySel){
-      qualitySel.addEventListener("change", () => {
-        localStorage.setItem("fxQuality", qualitySel.value);
-        // quick reload of FX without refreshing page
-        stopFX();
-        startFX();
-      }, { passive: true });
-    } else {
-      // ensure value exists even if selector hidden on small screens
-      loadQualityPref();
-    }
-
-    // ---------------------------
-    // Scroll performance: pause heavy FX while scrolling
-    // ---------------------------
-    let scrolling = false;
-    let scrollTimer = 0;
-    window.addEventListener("scroll", () => {
-      scrolling = true;
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => scrolling = false, 140);
-    }, { passive: true });
-
-    // Pause FX when tab not visible (battery-friendly)
-    let pageHidden = false;
-    document.addEventListener("visibilitychange", () => {
-      pageHidden = document.hidden;
-    });
-
-    // ---------------------------
-    // FX Canvas: optimized lightning + particles + fog
+    // LOW FX Canvas (always low)
     // ---------------------------
     const canvas = document.getElementById("fx");
     const ctx = canvas.getContext("2d", { alpha: true });
 
-    let fxRAF = 0;
-    let running = false;
+    // Always low: cap DPR hard to 1 (big performance win)
+    const DPR_CAP = 1.0;
+    const TARGET_FPS = 30; // stable on low-end
 
     let w=0, h=0, dpr=1;
-
-    function dprForQuality(q){
-      // Cap DPR for performance (huge win)
-      if (q === "low") return 1.0;
-      if (q === "med") return Math.min(1.35, window.devicePixelRatio || 1);
-      return Math.min(1.6, window.devicePixelRatio || 1);
-    }
-
-    function resizeCanvas(q){
-      dpr = dprForQuality(q);
+    function resizeCanvas(){
+      dpr = Math.min(DPR_CAP, window.devicePixelRatio || 1);
       w = Math.floor(window.innerWidth * dpr);
       h = Math.floor(window.innerHeight * dpr);
       canvas.width = w;
@@ -832,63 +704,48 @@
       canvas.style.width = window.innerWidth + "px";
       canvas.style.height = window.innerHeight + "px";
     }
+    window.addEventListener("resize", resizeCanvas, { passive: true });
+    resizeCanvas();
 
-    // FX state (rebuilt per quality)
+    // Particle storm (low count)
+    const area = window.innerWidth * window.innerHeight;
+    const PARTICLES = Math.floor(clamp(area / 14000, 50, 90));
+    const FOGS = 3;
+
     let particles = [];
-    let fogs = [];
-    let flash = 0;
-    let nextStrike = performance.now() + rand(900, 2400);
-
-    let TARGET_FPS = 30;
-
-    function buildFX(q){
-      // FPS caps per tier
-      TARGET_FPS = (q === "high") ? 60 : (q === "med") ? 45 : 30;
-
-      // Recreate particles / fog with tier-based counts
-      const area = window.innerWidth * window.innerHeight;
-
-      const pMin = (q === "low") ? 50 : (q === "med") ? 90 : 140;
-      const pMax = (q === "low") ? 90 : (q === "med") ? 150 : 220;
-      const particleCount = Math.floor(clamp(area / 11000, pMin, pMax));
-
-      const fogCount = (q === "low") ? 3 : (q === "med") ? 4 : 6;
-
-      particles = [];
-      for (let i=0; i<particleCount; i++){
-        const speed = rand(0.35, 1.65) * dpr;
-        const size  = rand(0.6, (q === "low" ? 2.0 : 2.6)) * dpr;
-        particles.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          vx: -speed * rand(0.6, 1.2),
-          vy:  speed * rand(0.10, 0.45),
-          r: size,
-          a: rand(q === "low" ? 0.06 : 0.08, q === "low" ? 0.16 : 0.22),
-          hue: Math.random() < 0.8 ? rand(265, 295) : rand(180, 200)
-        });
-      }
-
-      fogs = Array.from({length: fogCount}, () => ({
-        x: rand(0, w), y: rand(0, h),
-        rx: rand(q === "low" ? 220 : 260, q === "low" ? 420 : 520) * dpr,
-        ry: rand(q === "low" ? 120 : 140, q === "low" ? 280 : 380) * dpr,
-        vx: rand(-0.06, 0.06) * dpr,
-        vy: rand(-0.04, 0.04) * dpr,
-        a: rand(q === "low" ? 0.035 : 0.045, q === "low" ? 0.060 : 0.080),
-        tint: Math.random() < 0.65 ? "rgba(168,85,247," : "rgba(34,211,238,"
-      }));
-
-      flash = 0;
-      nextStrike = performance.now() + rand(900, 2400);
+    for (let i=0; i<PARTICLES; i++){
+      const speed = rand(0.35, 1.55) * dpr;
+      const size  = rand(0.6, 2.0) * dpr;
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: -speed * rand(0.6, 1.2),
+        vy:  speed * rand(0.10, 0.45),
+        r: size,
+        a: rand(0.06, 0.16),
+        hue: Math.random() < 0.8 ? rand(265, 295) : rand(180, 200)
+      });
     }
 
+    // Fog blobs (low count)
+    const fogs = Array.from({length: FOGS}, () => ({
+      x: rand(0, w), y: rand(0, h),
+      rx: rand(220, 420) * dpr,
+      ry: rand(120, 260) * dpr,
+      vx: rand(-0.06, 0.06) * dpr,
+      vy: rand(-0.04, 0.04) * dpr,
+      a: rand(0.035, 0.060),
+      tint: Math.random() < 0.65 ? "rgba(168,85,247," : "rgba(34,211,238,"
+    }));
+
+    // Lightning
+    let flash = 0;
+    let nextStrike = performance.now() + rand(1600, 4200);
+
     function fadeBackground(){
-      // Lower alpha = less smearing / less work
       ctx.fillStyle = "rgba(0,0,0,0.18)";
       ctx.fillRect(0, 0, w, h);
 
-      // Subtle wash
       const g = ctx.createLinearGradient(0, 0, 0, h);
       g.addColorStop(0, "rgba(168,85,247,0.06)");
       g.addColorStop(1, "rgba(34,211,238,0.015)");
@@ -896,9 +753,8 @@
       ctx.fillRect(0, 0, w, h);
     }
 
-    function drawFog(q){
+    function drawFog(){
       ctx.save();
-      // 'screen' is expensive but fog count is low; keep it, but cheap alpha
       ctx.globalCompositeOperation = "screen";
       for(const f of fogs){
         f.x += f.vx; f.y += f.vy;
@@ -920,22 +776,20 @@
       ctx.restore();
     }
 
-    function drawParticles(q){
+    function drawParticles(){
       ctx.save();
-      // 'lighter' looks sick but can cost; OK with reduced counts + reduced blur
       ctx.globalCompositeOperation = "lighter";
-      const blur = (q === "low") ? (2.8 * dpr) : (q === "med") ? (4.2 * dpr) : (5.5 * dpr);
+      const blur = 2.8 * dpr;
 
       for(const p of particles){
         p.x += p.vx;
         p.y += p.vy;
 
-        // tiny turbulence
         p.vx += rand(-0.010, 0.010) * dpr;
         p.vy += rand(-0.005, 0.005) * dpr;
 
-        p.vx = clamp(p.vx, -3.2*dpr, -0.2*dpr);
-        p.vy = clamp(p.vy,  0.04*dpr,  2.2*dpr);
+        p.vx = clamp(p.vx, -3.0*dpr, -0.2*dpr);
+        p.vy = clamp(p.vy,  0.04*dpr,  2.0*dpr);
 
         if(p.x < -20*dpr){ p.x = w + 20*dpr; p.y = Math.random() * h; }
         if(p.y > h + 20*dpr){ p.y = -20*dpr; p.x = Math.random() * w; }
@@ -958,21 +812,17 @@
       genBolt(mx, my, x1, y1, depth-1, displace/1.9, points);
     }
 
-    function drawBolt(path, baseWidth, colorMain, colorGlow, q){
+    function drawBolt(path, baseWidth, colorMain, colorGlow){
       ctx.save();
       ctx.lineCap = "round";
       ctx.lineJoin = "round";
 
-      // Keep glow but reduce blur based on tier
-      const glowMul = (q === "low") ? 3.2 : (q === "med") ? 4.2 : 5.2;
-      const blurMul = (q === "low") ? 5.5 : (q === "med") ? 7.5 : 9.0;
-
       ctx.globalCompositeOperation = "lighter";
 
-      // Outer glow
+      // Reduced glow (low)
       ctx.strokeStyle = colorGlow;
-      ctx.lineWidth = baseWidth * glowMul;
-      ctx.shadowBlur = baseWidth * blurMul;
+      ctx.lineWidth = baseWidth * 3.2;
+      ctx.shadowBlur = baseWidth * 5.5;
       ctx.shadowColor = colorGlow;
       ctx.beginPath();
       ctx.moveTo(path[0].x, path[0].y);
@@ -983,7 +833,7 @@
       ctx.globalCompositeOperation = "source-over";
       ctx.strokeStyle = colorMain;
       ctx.lineWidth = baseWidth;
-      ctx.shadowBlur = baseWidth * ((q === "low") ? 2.0 : 3.0);
+      ctx.shadowBlur = baseWidth * 2.0;
       ctx.shadowColor = colorMain;
       ctx.beginPath();
       ctx.moveTo(path[0].x, path[0].y);
@@ -993,151 +843,90 @@
       ctx.restore();
     }
 
-    function strike(q){
+    function strike(){
       const startX = rand(w*0.12, w*0.88);
       const startY = -20 * dpr;
       const endX   = startX + rand(-220, 220) * dpr;
       const endY   = rand(h*0.45, h*0.95);
 
-      const main = "rgba(240,235,255,0.92)";
+      const main = "rgba(240,235,255,0.90)";
       const glow = "rgba(168,85,247,0.55)";
 
-      const depth = (q === "low") ? 6 : 7;
       const pts = [{x:startX, y:startY}];
-      genBolt(startX, startY, endX, endY, depth, (q === "low" ? 180 : 240) * dpr, pts);
+      genBolt(startX, startY, endX, endY, 6, 180 * dpr, pts);
 
-      drawBolt(pts, (q === "low") ? (1.3*dpr) : (1.6*dpr), main, glow, q);
+      drawBolt(pts, 1.3 * dpr, main, glow);
 
-      // Branches cheaper on low
-      const branchCount = (q === "low") ? Math.floor(rand(1, 3)) : Math.floor(rand(3, 6));
+      // Small amount of branching (low)
+      const branchCount = Math.floor(rand(1, 3));
       for(let b=0; b<branchCount; b++){
         const idx = Math.floor(rand(10, pts.length - 10));
         const p = pts[idx];
         const angle = rand(-Math.PI*0.85, Math.PI*0.15);
-        const len = rand((q === "low") ? 90 : 120, (q === "low") ? 210 : 320) * dpr;
+        const len = rand(90, 210) * dpr;
         const bx = p.x + Math.cos(angle) * len;
         const by = p.y + Math.sin(angle) * len;
 
         const bpts = [{x:p.x, y:p.y}];
-        genBolt(p.x, p.y, bx, by, (q === "low") ? 5 : 6, (q === "low" ? 80 : 120) * dpr, bpts);
+        genBolt(p.x, p.y, bx, by, 5, 80 * dpr, bpts);
 
-        drawBolt(bpts, (q === "low") ? (0.9*dpr) : (1.1*dpr),
-          "rgba(240,235,255,0.78)",
-          "rgba(34,211,238,0.30)",
-          q
-        );
+        drawBolt(bpts, 0.9 * dpr, "rgba(240,235,255,0.75)", "rgba(34,211,238,0.28)");
       }
 
-      flash = Math.max(flash, rand((q === "low") ? 0.25 : 0.35, (q === "low") ? 0.55 : 0.78));
+      flash = Math.max(flash, rand(0.25, 0.55));
     }
 
-    // FPS cap loop (critical for smooth scrolling)
+    // FPS-capped loop (no scroll pausing, always rolling)
     let last = performance.now();
     let acc = 0;
+    const STEP = 1 / TARGET_FPS;
 
-    function fxLoop(now){
-      if (!running) return;
-
-      // stop heavy work if hidden (battery friendly)
-      if (pageHidden){
-        fxRAF = requestAnimationFrame(fxLoop);
-        return;
-      }
-
-      const q = currentQuality();
-      const step = 1 / TARGET_FPS;
-
+    function renderFrame(now){
       const delta = Math.min(0.05, (now - last) / 1000);
       last = now;
       acc += delta;
 
-      // Render at capped FPS
-      while (acc >= step){
-        renderFrame(step, now, q);
-        acc -= step;
-      }
+      while (acc >= STEP){
+        fadeBackground();
 
-      fxRAF = requestAnimationFrame(fxLoop);
-    }
-
-    function renderFrame(dt, now, q){
-      // During active scroll, keep it light (smooth scroll priority)
-      if (scrolling){
-        // a tiny fade so it doesn't "hard freeze"
-        ctx.fillStyle = "rgba(0,0,0,0.24)";
-        ctx.fillRect(0, 0, w, h);
-        return;
-      }
-
-      fadeBackground();
-
-      // Less frequent lightning on low-end
-      if (now >= nextStrike){
-        strike(q);
-        if (q !== "low" && Math.random() < 0.22){
-          setTimeout(() => strike(q), Math.floor(rand(50, 120)));
+        if(now >= nextStrike){
+          strike();
+          nextStrike = now + rand(1600, 4200);
         }
-        nextStrike = now + rand(
-          (q === "low") ? 1500 : 1000,
-          (q === "low") ? 4200 : 3200
-        );
+
+        if(flash > 0.001){
+          ctx.save();
+          ctx.globalCompositeOperation = "screen";
+          ctx.fillStyle = `rgba(168,85,247,${flash * 0.12})`;
+          ctx.fillRect(0,0,w,h);
+          ctx.restore();
+          flash = lerp(flash, 0, 0.12);
+        }
+
+        drawFog();
+        drawParticles();
+
+        acc -= STEP;
       }
 
-      // Flash overlay (cheap fill)
-      if (flash > 0.001){
-        ctx.save();
-        ctx.globalCompositeOperation = "screen";
-        ctx.fillStyle = `rgba(168,85,247,${flash * ((q === "low") ? 0.12 : 0.18)})`;
-        ctx.fillRect(0,0,w,h);
-        ctx.restore();
-        flash = lerp(flash, 0, (q === "low") ? 0.12 : 0.18);
-      }
-
-      drawFog(q);
-      drawParticles(q);
+      requestAnimationFrame(renderFrame);
     }
 
-    function startFX(){
-      if (!canvas) return;
-      running = true;
-
-      const q = currentQuality();
-      resizeCanvas(q);
-      buildFX(q);
-
-      // Prime
+    // Start unless reduced-motion
+    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+    if (!reduceMotion) {
       ctx.fillStyle = "rgba(0,0,0,1)";
       ctx.fillRect(0,0,w,h);
-
-      last = performance.now();
-      acc = 0;
-      cancelAnimationFrame(fxRAF);
-      fxRAF = requestAnimationFrame(fxLoop);
+      requestAnimationFrame(renderFrame);
     }
-
-    function stopFX(){
-      running = false;
-      cancelAnimationFrame(fxRAF);
-      fxRAF = 0;
-    }
-
-    window.addEventListener("resize", () => {
-      // rebuild on resize for stability (still cheap because capped)
-      stopFX();
-      startFX();
-    }, { passive: true });
-
-    // Start FX unless reduced-motion
-    const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
-    if (!reduceMotion) startFX();
 
     // ---------------------------
-    // Neon Cursor Trail + Click Sparks (snappy + disabled on touch)
+    // Cursor FX (snappy, desktop-only)
     // ---------------------------
     (function neonCursorFX(){
       const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
       if (reduce) return;
-      if (isTouchDevice()) return; // mobile-friendly: no cursor FX on touch
+      if (isTouchDevice()) return;
 
       const layer = document.getElementById("cursorLayer");
       if (!layer) return;
@@ -1149,16 +938,13 @@
       let mx = window.innerWidth / 2, my = window.innerHeight / 2;
       let lx = mx, ly = my;
 
-      // Faster response (your request)
-      const FOLLOW = 0.70; // 0.55-0.9: higher = snappier
-
-      // Smaller trail for performance
-      const TRAIL_MAX = 18;
+      const FOLLOW = 0.80; // SNAPPY
+      const TRAIL_MAX = 16;
       const trail = [];
       const bands = [
-        {a: 0.45, size: 22},
-        {a: 0.35, size: 18},
-        {a: 0.25, size: 14},
+        {a: 0.42, size: 20},
+        {a: 0.32, size: 16},
+        {a: 0.22, size: 12},
       ];
 
       function makeTrailNode(){
@@ -1169,11 +955,9 @@
       }
       for (let i = 0; i < TRAIL_MAX; i++) trail.push(makeTrailNode());
 
-      // pointermove is generally better than mousemove
       window.addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; }, { passive: true });
 
       function spawnSparks(x, y){
-        // fewer sparks to keep it smooth
         const count = Math.floor(8 + Math.random() * 10);
         for (let i = 0; i < count; i++){
           const s = document.createElement("div");
@@ -1197,12 +981,10 @@
 
           (function step(){
             life -= 0.055;
-            px += vx;
-            py += vy;
+            px += vx; py += vy;
 
             vy += grav;
-            vx *= 0.985;
-            vy *= 0.985;
+            vx *= 0.985; vy *= 0.985;
 
             s.style.left = px + "px";
             s.style.top  = py + "px";
@@ -1230,7 +1012,6 @@
       }, { passive: true });
 
       function animate(){
-        // Snappier follow
         lx += (mx - lx) * FOLLOW;
         ly += (my - ly) * FOLLOW;
 
