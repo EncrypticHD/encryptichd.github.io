@@ -96,9 +96,7 @@ h1, p {
     animation: float 4s ease-in-out infinite;
 }
 
-h1 {
-    font-size: 40px;
-}
+h1 { font-size: 40px; }
 
 p {
     opacity: 0.8;
@@ -144,14 +142,37 @@ p {
     margin-left: 8px;
 }
 
+/* Moblie side */
+
 @media (max-width: 768px) {
+
+    body {
+        overflow: hidden;
+    }
+
+    #gameGrid {
+        grid-template-columns: repeat(20, 1fr);
+        grid-template-rows: repeat(12, 1fr);
+    }
+
+    .line-glow {
+        background-size: calc(100% / 20) calc(100% / 12);
+    }
+
     h1 { font-size: 32px; }
     p { font-size: 16px; }
+
     #workButton {
         font-size: 20px;
         padding: 16px 32px;
     }
+
+    #workVideo {
+        display: block;
+        pointer-events: none;
+    }
 }
+
 </style>
 </head>
 
@@ -166,7 +187,7 @@ p {
     <p id="desc"></p>
 
     <button id="workButton">
-        <video id="workVideo" src="skit.mp4" muted></video>
+        <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
         <span class="button-text">Work <span class="arrow">→</span></span>
     </button>
 </div>
@@ -203,6 +224,11 @@ window.addEventListener("DOMContentLoaded", () => {
             );
         }, 1600);
     }, 300);
+
+    if (window.innerWidth <= 768) {
+        const video = document.getElementById("workVideo");
+        video.play().catch(() => {});
+    }
 });
 
 const rows = 12;
@@ -252,14 +278,18 @@ const button = document.getElementById("workButton");
 const video = document.getElementById("workVideo");
 
 button.addEventListener("mouseenter", () => {
-    video.style.display = "block";
-    video.play();
+    if (window.innerWidth > 768) {
+        video.style.display = "block";
+        video.play();
+    }
 });
 
 button.addEventListener("mouseleave", () => {
-    video.pause();
-    video.currentTime = 0;
-    video.style.display = "none";
+    if (window.innerWidth > 768) {
+        video.pause();
+        video.currentTime = 0;
+        video.style.display = "none";
+    }
 });
 </script>
 
