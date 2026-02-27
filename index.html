@@ -143,21 +143,20 @@ p {
 }
 
 /* Moblie side */
-
+    
 @media (max-width: 768px) {
-
-    body {
-        overflow: hidden;
-    }
 
     #gameGrid {
         grid-template-columns: repeat(20, 1fr);
-        grid-template-rows: repeat(12, 1fr);
+        grid-template-rows: repeat(12, calc(100vw / 20));
+        height: calc((100vw / 20) * 12);
     }
 
     .line-glow {
-        background-size: calc(100% / 20) calc(100% / 12);
+        background-size: calc(100vw / 20) calc(100vw / 20);
     }
+
+}
 
     h1 { font-size: 32px; }
     p { font-size: 16px; }
