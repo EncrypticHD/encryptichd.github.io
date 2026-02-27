@@ -8,25 +8,85 @@
 body {
     margin: 0;
     height: 100vh;
-
-    background-color: #2b0a3d;
-
-    background-image:
-        linear-gradient(rgba(255,255,255,0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.07) 1px, transparent 1px);
-
-    background-size: 60px 60px;
-
+    background: #2b0a3d;
     font-family: Arial, sans-serif;
     color: white;
-
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+#gameGrid {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(20, 1fr);
+    grid-template-rows: repeat(12, 1fr);
+    z-index: 0;
+}
+
+.tile {
+    border: 1px solid rgba(184,77,255,0.15);
+    transition: 0.15s ease;
+}
+
+.tile:hover {
+    box-shadow: 0 0 6px rgba(184,77,255,0.8);
+    border-color: rgba(184,77,255,0.9);
+}
+
+.tile.revealed {
+    background: rgba(184,77,255,0.25);
+}
+
+.tile.bomb {
+    background: red;
+}
+
+.line-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background-image:
+        linear-gradient(rgba(184,77,255,0.9) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(184,77,255,0.9) 1px, transparent 1px);
+
+    background-size: calc(100vw / 20) calc(100vh / 12);
+
+    mask-image: radial-gradient(
+        70px circle at var(--x) var(--y),
+        black 85%,
+        transparent 100%
+    );
+
+    -webkit-mask-image: radial-gradient(
+        70px circle at var(--x) var(--y),
+        black 85%,
+        transparent 100%
+    );
+
+    z-index: 1;
+}
+
+.mouse-glow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+
+    background: radial-gradient(
+        80px circle at var(--x) var(--y),
+        rgba(184, 77, 255, 0.18),
+        transparent 70%
+    );
+
+    z-index: 1;
+}
+
 .container {
     text-align: center;
+    z-index: 2;
 }
 
 h1 {
@@ -43,47 +103,47 @@ p {
     position: relative;
     padding: 14px 28px;
     font-size: 18px;
-
     color: white;
     background: transparent;
-
     border: 2px solid #b84dff;
     border-radius: 8px;
-
     cursor: pointer;
     overflow: hidden;
-
-    box-shadow: 0 0 15px #b84dff;
+    box-shadow: 0 0 20px #b84dff;
     transition: 0.3s ease;
 }
 
 #workButton:hover {
-    box-shadow: 0 0 25px #b84dff, 0 0 40px #b84dff;
+    box-shadow: 0 0 35px #b84dff, 0 0 60px #b84dff;
     transform: scale(1.05);
 }
 
 #workVideo {
     position: absolute;
-    top: 0;
-    left: 0;
-
+    inset: 0;
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
-    z-index: 0;
     display: none;
+    z-index: 0;
 }
 
 .button-text {
     position: relative;
     z-index: 1;
 }
+
+.arrow {
+    margin-left: 8px;
+}
 </style>
 </head>
 
 <body>
+
+<div id="gameGrid"></div>
+<div class="line-glow"></div>
+<div class="mouse-glow"></div>
 
 <div class="container">
     <h1>Your Name</h1>
@@ -91,11 +151,62 @@ p {
 
     <button id="workButton">
         <video id="workVideo" src="skit.mp4" muted></video>
-        <span class="button-text">Work →</span>
+        <span class="button-text">Work <span class="arrow">→</span></span>
     </button>
 </div>
 
 <script>
+const root = document.documentElement;
+
+document.addEventListener("mousemove", (e) => {
+    root.style.setProperty("--x", e.clientX + "px");
+    root.style.setProperty("--y", e.clientY + "px");
+});
+
+const rows = 12;
+const cols = 20;
+const bombCount = 40;
+
+const gameGrid = document.getElementById("gameGrid");
+let board = [];
+
+function createBoard() {
+    gameGrid.innerHTML = "";
+    board = [];
+
+    for (let i = 0; i < rows * cols; i++) {
+        board.push({ bomb: false });
+
+        const tile = document.createElement("div");
+        tile.classList.add("tile");
+
+        tile.addEventListener("click", () => revealTile(i, tile));
+
+        gameGrid.appendChild(tile);
+    }
+
+    let placed = 0;
+    while (placed < bombCount) {
+        let index = Math.floor(Math.random() * board.length);
+        if (!board[index].bomb) {
+            board[index].bomb = true;
+            placed++;
+        }
+    }
+}
+
+function revealTile(index, tile) {
+    if (board[index].bomb) {
+        tile.classList.add("bomb");
+        setTimeout(() => createBoard(), 400);
+        return;
+    }
+
+    tile.classList.add("revealed");
+}
+
+createBoard();
+
 const button = document.getElementById("workButton");
 const video = document.getElementById("workVideo");
 
