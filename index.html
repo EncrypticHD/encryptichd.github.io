@@ -115,11 +115,6 @@ p {
     box-shadow: 0 0 20px #b84dff;
     transition: 0.3s ease;
 }
-    
-<button id="workButton" onclick="window.location.href='work.html'">
-    <video id="workVideo" src="skit.mp4" muted playsinline loop></video>
-    <span class="button-text">Work <span class="arrow">→</span></span>
-</button>
 
 #workButton:hover {
     box-shadow: 0 0 35px #b84dff, 0 0 60px #b84dff;
@@ -176,6 +171,19 @@ p {
     }
 }
 
+.page-fade {
+    position: fixed;
+    inset: 0;
+    background: #2b0a3d;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+    z-index: 9999;
+}
+
+.page-fade.on {
+    opacity: 1;
+}
 </style>
 </head>
 
@@ -194,6 +202,8 @@ p {
         <span class="button-text">Work <span class="arrow">→</span></span>
     </button>
 </div>
+
+<div class="page-fade" id="pageFade"></div>
 
 <script>
 const root = document.documentElement;
@@ -279,6 +289,7 @@ createBoard();
 
 const button = document.getElementById("workButton");
 const video = document.getElementById("workVideo");
+const pageFade = document.getElementById("pageFade");
 
 button.addEventListener("mouseenter", () => {
     if (window.innerWidth > 768) {
@@ -293,6 +304,13 @@ button.addEventListener("mouseleave", () => {
         video.currentTime = 0;
         video.style.display = "none";
     }
+});
+
+button.addEventListener("click", () => {
+    pageFade.classList.add("on");
+    setTimeout(() => {
+        window.location.href = "work.html";
+    }, 300);
 });
 </script>
 
